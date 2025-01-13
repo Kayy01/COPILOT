@@ -6,9 +6,11 @@
     <style>
       html, body {
         height: 100%;
+        margin: 0;
       }
       body {
-        margin: 0;
+        display: flex;
+        flex-direction: column;
       }
       h1 {
         color: white;
@@ -23,13 +25,13 @@
         background-color: rgb(247, 167, 18);
         display: flex;
         height: 50px;
+        justify-content: center;
       }
       #webchat {
-        height: calc(100% - 50px);
-        overflow: hidden;
-        position: fixed;
-        top: 50px;
+        flex: 1;
+        position: relative;
         width: 100%;
+        overflow: hidden;
       }
       #switchToAI {
         position: absolute;
@@ -40,6 +42,7 @@
         padding: 10px;
         border: none;
         cursor: pointer;
+        z-index: 10; /* Ensure the button stays on top */
       }
     </style>
   </head>
@@ -82,7 +85,7 @@
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
           const apiVersion = tokenEndpointURL.searchParams.get('api-version');
           const [directLineURL, token] = await Promise.all([
-            fetch(new URL(/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}, tokenEndpointURL))
+            fetch(new URL(`/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}`, tokenEndpointURL))
               .then(response => response.json())
               .then(({ channelUrlsById: { directline } }) => directline),
             fetch(tokenEndpointURL)
