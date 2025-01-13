@@ -4,121 +4,90 @@
     <title>MEWAH</title>
     <link rel="icon" href="https://files.ajobthing.com/employers/131650.png" type="image/png">
     <style>
-      /* Reset and Body Styling */
       html, body {
         height: 100%;
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-        background-color: #f4f4f4;
-        color: #333;
       }
-
-      /* Layout Container */
-      #container {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-      }
-
-      /* Header Banner */
-      #banner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: linear-gradient(45deg, rgb(247, 167, 18), #f19b18);
-        padding: 0 15px;
-        height: 50px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-
-      #banner h1 {
-        color: white;
-        font-size: 18px;
+      body {
         margin: 0;
       }
-
-      /* Button Styling */
-      #switchToAI {
-        background-color: #ffffff;
-        color: #f19b18;
-        padding: 8px 15px;
-        border: 2px solid #f19b18;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
-        font-size: 12px;
-        font-weight: bold;
-      }
-
-      #switchToAI:hover {
-        background-color: #f19b18;
+      h1 {
         color: white;
-      }
-
-      /* Webchat Container */
-      #webchat {
-        flex: 1;
-        padding: 10px;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-      }
-
-      /* Loading Spinner */
-      #loading {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
+        font-family: Segoe UI;
         font-size: 16px;
-        color: #999;
+        line-height: 20px;
+        margin: 0;
+        padding: 0 20px;
+      }
+      #banner {
+        align-items: center;
+        background-color: rgb(247, 167, 18);
+        display: flex;
+        height: 50px;
+      }
+      #webchat {
+        height: calc(100% - 50px);
+        overflow: hidden;
+        position: fixed;
+        top: 50px;
+        width: 100%;
+      }
+      #switchToAI {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: white;
+        color: black;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
-    <div id="container">
+    <div>
       <div id="banner">
         <h1>Mewah Virtual Assistant</h1>
-        <button id="switchToAI">Switch to AI Knowledge</button>
       </div>
-
-      <div id="webchat">
-        <div id="loading">Connecting to chat...</div>
-      </div>
+      <button id="switchToAI">Switch to AI Knowledge</button>
+      <div id="webchat" role="main"></div>
     </div>
 
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
     <script>
       (async function () {
+        // AI endpoint and API key from environment variables
         const aiEndpoint = '${{ secrets.AI_ENDPOINT }}';
         const aiApiKey = '${{ secrets.AI_API_KEY }}';
 
+        // Default state
+        let useAI = false;
+
+        // Style options
         const styleOptions = {
           accent: '#00809d',
           botAvatarBackgroundColor: '#FFFFFF',
           botAvatarImage: 'https://files.ajobthing.com/employers/131650.png',
           botAvatarInitials: 'M',
-          userAvatarImage: 'https://files.ajobthing.com/employers/131650.png',
+          userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
         };
 
+        // Switch button handler
         document.getElementById('switchToAI').addEventListener('click', () => {
           window.open('https://www.office.com/chat?auth=2', '_blank');
         });
 
+        // Initialize conversation
         async function initializeConversation() {
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
           const apiVersion = tokenEndpointURL.searchParams.get('api-version');
-
           const [directLineURL, token] = await Promise.all([
-            fetch(new URL(`/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}`, tokenEndpointURL))
+            fetch(new URL(/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}, tokenEndpointURL))
               .then(response => response.json())
               .then(({ channelUrlsById: { directline } }) => directline),
             fetch(tokenEndpointURL)
               .then(response => response.json())
-              .then(({ token }) => token),
+              .then(({ token }) => token)
           ]);
 
           const directLine = WebChat.createDirectLine({ domain: new URL('v3/directline', directLineURL), token });
@@ -130,17 +99,18 @@
                   localTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                   locale: 'en',
                   name: 'startConversation',
-                  type: 'event',
+                  type: 'event'
                 }).subscribe();
-                document.getElementById('loading').style.display = 'none';
+
                 subscription.unsubscribe();
               }
-            },
+            }
           });
 
           WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('webchat'));
         }
 
+        // Initialize
         initializeConversation();
       })();
     </script>
