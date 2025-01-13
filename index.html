@@ -10,7 +10,7 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         display: flex;
         flex-direction: column;
-        background: linear-gradient(to right, #f7a718, #f9d03f); /* Gradient for elegant look */
+        transition: background-color 0.3s ease;
       }
       body {
         display: flex;
@@ -58,7 +58,7 @@
       }
       #webchat {
         position: fixed;
-        bottom: 0;
+        bottom: -100%;
         width: 100%;
         height: 50%;
         background: #fff;
@@ -70,13 +70,84 @@
         justify-content: center;
         align-items: center;
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: all 0.5s ease-in-out;
+      }
+      #webchat.open {
+        bottom: 0; /* Animate chat box opening */
       }
       #webchat iframe {
         border: none;
         width: 100%;
         height: 100%;
         border-radius: 20px;
+      }
+
+      /* Loading screen animation */
+      #loadingScreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.9);
+        z-index: 10;
+      }
+      #loadingScreen img {
+        width: 60px;
+        height: 60px;
+        animation: spin 2s infinite linear;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Dark Mode */
+      body.dark-mode {
+        background-color: #333;
+        color: #f0f0f0;
+      }
+      #switchTheme {
+        position: absolute;
+        top: 70px;
+        left: 20px;
+        background-color: #00809d;
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #switchTheme:hover {
+        background-color: #006e7c;
+      }
+
+      /* Tooltip for First-Time Users */
+      #tooltip {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 14px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 15;
+      }
+
+      /* Microinteractions: Buttons */
+      button, #switchTheme {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      button:hover, #switchTheme:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
       }
     </style>
   </head>
@@ -86,13 +157,25 @@
         <h1>Mewah Virtual Assistant</h1>
       </div>
       <button id="switchToAI">Switch to AI Knowledge</button>
+      <button id="switchTheme">Toggle Dark/Light Mode</button>
       <div id="webchat" role="main"></div>
+
+      <!-- Loading screen -->
+      <div id="loadingScreen">
+        <img src="https://i.gifer.com/YCZH.gif" alt="loading">
+      </div>
+
+      <!-- Tooltip for first-time users -->
+      <div id="tooltip">Click on "Switch to AI Knowledge" to get started!</div>
     </div>
 
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
     <script>
       (async function () {
+        // Show loading screen during initialization
+        document.getElementById('loadingScreen').style.display = 'flex';
+
         // AI endpoint and API key from environment variables
         const aiEndpoint = '${{ secrets.AI_ENDPOINT }}';
         const aiApiKey = '${{ secrets.AI_API_KEY }}';
@@ -109,10 +192,20 @@
           userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
         };
 
-        // Switch button handler
+        // Switch button handler for AI Knowledge
         document.getElementById('switchToAI').addEventListener('click', () => {
           window.open('https://www.office.com/chat?auth=2', '_blank');
         });
+
+        // Dark/Light Mode Toggle
+        document.getElementById('switchTheme').addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+        });
+
+        // Close tooltip after a few seconds
+        setTimeout(() => {
+          document.getElementById('tooltip').style.display = 'none';
+        }, 5000);
 
         // Initialize conversation
         async function initializeConversation() {
@@ -145,6 +238,12 @@
           });
 
           WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('webchat'));
+
+          // Hide loading screen after chat is initialized
+          document.getElementById('loadingScreen').style.display = 'none';
+
+          // Show chatbox with animation
+          document.getElementById('webchat').classList.add('open');
         }
 
         // Initialize
