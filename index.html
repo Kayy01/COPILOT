@@ -13,20 +13,27 @@
         color: #333;
       }
 
+      /* Layout Container */
+      #container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
       /* Header Banner */
       #banner {
         display: flex;
         align-items: center;
         justify-content: space-between;
         background: linear-gradient(45deg, rgb(247, 167, 18), #f19b18);
-        padding: 0 20px;
-        height: 60px;
+        padding: 0 15px;
+        height: 50px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
       #banner h1 {
         color: white;
-        font-size: 20px;
+        font-size: 18px;
         margin: 0;
       }
 
@@ -34,12 +41,12 @@
       #switchToAI {
         background-color: #ffffff;
         color: #f19b18;
-        padding: 10px 20px;
+        padding: 8px 15px;
         border: 2px solid #f19b18;
         border-radius: 20px;
         cursor: pointer;
         transition: background-color 0.3s, color 0.3s;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
       }
 
@@ -50,44 +57,36 @@
 
       /* Webchat Container */
       #webchat {
-        height: calc(100% - 60px);
-        margin-top: 60px;
+        flex: 1;
         padding: 10px;
         background: #fff;
         border: 1px solid #ddd;
-        border-radius: 10px;
+        border-radius: 8px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
       }
 
-      /* Loading Indicator */
+      /* Loading Spinner */
       #loading {
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100%;
-        font-size: 18px;
+        font-size: 16px;
         color: #999;
-        animation: fadeIn 1s infinite;
-      }
-
-      @keyframes fadeIn {
-        0%, 100% {
-          opacity: 0.5;
-        }
-        50% {
-          opacity: 1;
-        }
       }
     </style>
   </head>
   <body>
-    <div id="banner">
-      <h1>Mewah Virtual Assistant</h1>
-      <button id="switchToAI">Switch to AI Knowledge</button>
-    </div>
+    <div id="container">
+      <div id="banner">
+        <h1>Mewah Virtual Assistant</h1>
+        <button id="switchToAI">Switch to AI Knowledge</button>
+      </div>
 
-    <div id="webchat">
-      <div id="loading">Loading chat interface...</div>
+      <div id="webchat">
+        <div id="loading">Connecting to chat...</div>
+      </div>
     </div>
 
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
@@ -97,19 +96,12 @@
         const aiEndpoint = '${{ secrets.AI_ENDPOINT }}';
         const aiApiKey = '${{ secrets.AI_API_KEY }}';
 
-        let useAI = false;
-
         const styleOptions = {
           accent: '#00809d',
           botAvatarBackgroundColor: '#FFFFFF',
           botAvatarImage: 'https://files.ajobthing.com/employers/131650.png',
           botAvatarInitials: 'M',
           userAvatarImage: 'https://files.ajobthing.com/employers/131650.png',
-          bubbleBackground: '#f4f4f4',
-          bubbleBorderRadius: 10,
-          bubbleTextColor: '#333',
-          userBubbleBackground: '#00809d',
-          userBubbleTextColor: '#fff',
         };
 
         document.getElementById('switchToAI').addEventListener('click', () => {
@@ -119,13 +111,14 @@
         async function initializeConversation() {
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
           const apiVersion = tokenEndpointURL.searchParams.get('api-version');
+
           const [directLineURL, token] = await Promise.all([
             fetch(new URL(`/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}`, tokenEndpointURL))
               .then(response => response.json())
               .then(({ channelUrlsById: { directline } }) => directline),
             fetch(tokenEndpointURL)
               .then(response => response.json())
-              .then(({ token }) => token)
+              .then(({ token }) => token),
           ]);
 
           const directLine = WebChat.createDirectLine({ domain: new URL('v3/directline', directLineURL), token });
@@ -137,12 +130,12 @@
                   localTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                   locale: 'en',
                   name: 'startConversation',
-                  type: 'event'
+                  type: 'event',
                 }).subscribe();
-                subscription.unsubscribe();
                 document.getElementById('loading').style.display = 'none';
+                subscription.unsubscribe();
               }
-            }
+            },
           });
 
           WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('webchat'));
