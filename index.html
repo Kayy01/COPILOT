@@ -72,24 +72,17 @@
           userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
         };
 
-        // Switch button handler
+        // Switch button handler - Opens Microsoft Copilot in a new window
         document.getElementById('switchToAI').addEventListener('click', () => {
-          // Confirm the mode switch with the user
-          const userConfirmed = confirm(`Are you sure you want to switch to ${useAI ? 'Oganization' : 'AI'} Knowledge mode?`);
-          
-          if (userConfirmed) {
-            useAI = !useAI;
-            document.getElementById('switchToAI').textContent = useAI ? 'Switch to Organization Knowledge' : 'Switch to AI Knowledge';
-            // Reinitialize the conversation based on the switch
-            initializeConversation();
-          }
+          // Open Microsoft Copilot in a new window
+          window.open('https://www.microsoft.com/en-us/microsoft-365/copilot', '_blank');
         });
 
         // Function to initialize conversation
         async function initializeConversation() {
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
           const apiVersion = tokenEndpointURL.searchParams.get('api-version');
-          const [directLineURL, token] = await Promise.all([  
+          const [directLineURL, token] = await Promise.all([
             fetch(new URL(`/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}`, tokenEndpointURL))
               .then(response => response.json())
               .then(({ channelUrlsById: { directline } }) => directline),
@@ -118,38 +111,6 @@
           });
 
           WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('webchat'));
-          
-          // Handle user messages and send to AI if in AI mode
-          if (useAI) {
-            document.getElementById('webchat').addEventListener('sendMessage', async (event) => {
-              const userMessage = event.detail.message;
-              await sendMessageToAI(userMessage);
-            });
-          }
-        }
-
-        // Function to send message to AI
-        async function sendMessageToAI(message) {
-          if (useAI) {
-            await fetch(aiEndpoint, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${AloI7eJioMWY1wsd3nDgpsv6gYv3rlZfM92lXxIcUpDAKMj25tbCJQQJ99AKACYeBjFXJ3w3AAABACOGqcXh}`
-              },
-              body: JSON.stringify({
-                prompt: message,
-                max_tokens: 150
-              })
-            })
-            .then(response => response.json())
-            .then(data => {
-              // Display AI response in chat
-              console.log('AI Response:', data);
-              // Implement code to display this response in your chat interface.
-            })
-            .catch(error => console.error('AI API Error:', error));
-          }
         }
 
         // Initial conversation setup
@@ -158,3 +119,4 @@
     </script>
   </body>
 </html>
+
