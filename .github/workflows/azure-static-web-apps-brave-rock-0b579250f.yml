@@ -19,6 +19,13 @@ jobs:
         with:
           submodules: true
           lfs: false
+
+      # Set up environment variables from GitHub secrets
+      - name: Set up environment variables
+        run: |
+          echo "AI_ENDPOINT=${{ secrets.AI_ENDPOINT }}" >> $GITHUB_ENV
+          echo "AI_API_KEY=${{ secrets.AI_API_KEY }}" >> $GITHUB_ENV
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
