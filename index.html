@@ -4,8 +4,7 @@
     <title>MEWAH</title>
     <link rel="icon" href="https://files.ajobthing.com/employers/131650.png" type="image/png">
     <style>
-      html,
-      body {
+      html, body {
         height: 100%;
       }
       body {
@@ -57,14 +56,14 @@
 
     <script>
       (async function () {
-        // AI endpoint details
-        const aiEndpoint = process.env.AI_ENDPOINT;
-        const aiApiKey = process.env.AI_API_KEY;
+        // AI endpoint and API key from environment variables
+        const aiEndpoint = '${{ secrets.AI_ENDPOINT }}';
+        const aiApiKey = '${{ secrets.AI_API_KEY }}';
 
-        // Default state (not using Azure OpenAI)
+        // Default state
         let useAI = false;
 
-        // Style options for webchat
+        // Style options
         const styleOptions = {
           accent: '#00809d',
           botAvatarBackgroundColor: '#FFFFFF',
@@ -73,13 +72,12 @@
           userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
         };
 
-        // Switch button handler - Opens Microsoft Copilot in a new window
+        // Switch button handler
         document.getElementById('switchToAI').addEventListener('click', () => {
-          // Open Microsoft Copilot in a new window
           window.open('https://www.office.com/chat?auth=2', '_blank');
         });
 
-        // Function to initialize conversation
+        // Initialize conversation
         async function initializeConversation() {
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
           const apiVersion = tokenEndpointURL.searchParams.get('api-version');
@@ -97,14 +95,12 @@
           const subscription = directLine.connectionStatus$.subscribe({
             next(value) {
               if (value === 2) {
-                directLine
-                  .postActivity({
-                    localTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                    locale: 'en',
-                    name: 'startConversation',
-                    type: 'event'
-                  })
-                  .subscribe();
+                directLine.postActivity({
+                  localTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                  locale: 'en',
+                  name: 'startConversation',
+                  type: 'event'
+                }).subscribe();
 
                 subscription.unsubscribe();
               }
@@ -114,7 +110,7 @@
           WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('webchat'));
         }
 
-        // Initial conversation setup
+        // Initialize
         initializeConversation();
       })();
     </script>
