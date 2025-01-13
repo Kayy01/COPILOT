@@ -105,12 +105,13 @@
 
       /* Parallax Effect */
       .parallax {
-        background-image: url('https://source.unsplash.com/1600x900/?nature');
+        background-image: url('https://media2.giphy.com/media/A608loAlQgF4ag7k4m/giphy.webp?cid=790b7611q9dkjlvhq44pz1dsxtgpy3yv0xgfpxvroj2ugo9w&ep=v1_gifs_search&rid=giphy.webp&ct=g');
         background-attachment: fixed;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
         height: 300px;
+        opacity: 0.5; /* Faded effect */
       }
 
       /* Tooltip */
@@ -235,29 +236,6 @@
         // Initialize
         initializeConversation();
       })();
-
-      // Voice Assistant Integration
-      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.lang = 'en-US';
-      recognition.continuous = false;
-
-      recognition.onstart = () => {
-        console.log("Voice recognition started");
-      };
-
-      recognition.onresult = (event) => {
-        const command = event.results[0][0].transcript.toLowerCase();
-        console.log('Voice command received: ', command);
-        // Handle voice commands (e.g., opening the chat)
-        if (command.includes('open chat')) {
-          document.getElementById('webchat').classList.add('open');
-        }
-      };
-
-      // Trigger voice recognition with button (for demo)
-      document.getElementById('switchToAI').addEventListener('click', () => {
-        recognition.start();
-      });
     </script>
   </body>
 </html>
