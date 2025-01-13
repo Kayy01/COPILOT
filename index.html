@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     <title>MEWAH</title>
+    <!-- Favicon link -->
+    <link rel="icon" href="https://files.ajobthing.com/employers/131650.png" type="image/x-icon">
     <style>
       html,
       body {
@@ -57,8 +59,8 @@
     <script>
       (async function () {
         // AI endpoint details
-        const aiEndpoint = 'https://kareenaopenai2.openai.azure.com/openai/deployments/General/chat/completions?api-version=2024-08-01-preview';
-        const aiApiKey = 'AloI7eJioMWY1wsd3nDgpsv6gYv3rlZfM92lXxIcUpDAKMj25tbCJQQJ99AKACYeBjFXJ3w3AAABACOGqcXh';
+        const aiEndpoint = process.env.AI_ENDPOINT;
+        const aiApiKey = process.env.AI_API_KEY;
 
         // Default state (not using Azure OpenAI)
         let useAI = false;
