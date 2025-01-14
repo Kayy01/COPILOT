@@ -9,6 +9,8 @@
         height: 100%;
         margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
         background-color: white;
         scroll-behavior: smooth; /* Smooth scrolling */
       }
@@ -56,30 +58,13 @@
         transform: translateY(-2px);
       }
 
-      /* Parallax Background */
-      body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('https://media1.giphy.com/media/Ai0FCXmNLpfhQNs0af/giphy.webp?cid=ecf05e47ar9dio9iv86vb4kmcexsrd2arteyut4ijtybf12e&ep=v1_gifs_search&rid=giphy.webp&ct=g');
-        background-attachment: fixed;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        z-index: -1;
-        opacity: 0.7;
-      }
-
       /* Chatbox animation */
       #webchat {
         position: fixed;
         bottom: -100%;
         width: 100%;
         height: 70%;
-        background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+        background: rgba(255, 255, 255, 0.7); /* Transparent white background */
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
         box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
@@ -89,7 +74,7 @@
         align-items: center;
         overflow: hidden;
         transition: all 0.5s ease-in-out;
-        backdrop-filter: blur(5px); /* Blurred effect for better contrast */
+        backdrop-filter: blur(5px); /* Reduced blur effect */
         z-index: 5;
       }
       #webchat.open {
@@ -102,7 +87,7 @@
         height: 100%;
         max-height: 100%;
         overflow-y: auto;
-        background-color: rgba(255, 255, 255, 0.95); /* Slightly more opaque for better text readability */
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
         border-radius: 20px; /* For a clean look */
         padding: 15px;
       }
@@ -130,6 +115,38 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
+
+      /* Parallax Effect */
+      .parallax {
+        background-image: url('https://media1.giphy.com/media/Ai0FCXmNLpfhQNs0af/giphy.webp?cid=ecf05e47ar9dio9iv86vb4kmcexsrd2arteyut4ijtybf12e&ep=v1_gifs_search&rid=giphy.webp&ct=g');
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100%; /* Cover the entire chatbox */
+        opacity: 0.8; /* Slightly increase visibility */
+        background-blend-mode: overlay; /* Merge with white */
+      }
+
+      /* Tooltip */
+      #tooltip {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        background-color: #f7a718;
+        color: white;
+        font-size: 18px;
+        border-radius: 25px;
+        animation: fadeIn 2s ease-out;
+        display: none;
+      }
+
+      @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
     </style>
   </head>
   <body>
@@ -139,11 +156,17 @@
       </div>
 
       <button id="switchToAI">Switch to AI Knowledge</button>
+      
+      <!-- Parallax Effect Section -->
+      <div class="parallax"></div>
 
       <!-- Loading Screen -->
       <div id="loadingScreen">
         <img src="https://i.gifer.com/YCZH.gif" alt="loading">
       </div>
+      
+      <!-- Tooltip -->
+      <div id="tooltip">Welcome! Click the chat icon to start interacting.</div>
 
       <!-- Webchat Section -->
       <div id="webchat" role="main">
@@ -158,11 +181,77 @@
         // Show loading screen during initialization
         document.getElementById('loadingScreen').style.display = 'flex';
 
-        // Show chatbox with smooth slide-in effect
-        document.getElementById('webchat').classList.add('open');
+        // Show welcome tooltip on first visit
+        if (!localStorage.getItem('visited')) {
+          localStorage.setItem('visited', 'true');
+          document.getElementById('tooltip').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('tooltip').style.display = 'none';
+          }, 5000); // Hide tooltip after 5 seconds
+        }
 
-        // Hide loading screen after initialization
-        document.getElementById('loadingScreen').style.display = 'none';
+        // AI endpoint and API key from environment variables
+        const aiEndpoint = '${{ secrets.AI_ENDPOINT }}';
+        const aiApiKey = '${{ secrets.AI_API_KEY }}';
+
+        // Default state
+        let useAI = false;
+
+        // Style options for webchat
+        const styleOptions = {
+          accent: '#f7a718',
+          botAvatarBackgroundColor: '#FFFFFF',
+          botAvatarImage: 'https://files.ajobthing.com/employers/131650.png',
+          botAvatarInitials: 'M',
+          userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
+        };
+
+        // Switch button handler
+        document.getElementById('switchToAI').addEventListener('click', () => {
+          window.open('https://www.office.com/chat?auth=2', '_blank');
+        });
+
+        // Initialize conversation
+        async function initializeConversation() {
+          const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
+          const apiVersion = tokenEndpointURL.searchParams.get('api-version');
+          const [directLineURL, token] = await Promise.all([
+            fetch(new URL(/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}, tokenEndpointURL))
+              .then(response => response.json())
+              .then(({ channelUrlsById: { directline } }) => directline),
+            fetch(tokenEndpointURL)
+              .then(response => response.json())
+              .then(({ token }) => token)
+          ]);
+
+          const directLine = WebChat.createDirectLine({ domain: new URL('v3/directline', directLineURL), token });
+
+          const subscription = directLine.connectionStatus$.subscribe({
+            next(value) {
+              if (value === 2) {
+                directLine.postActivity({
+                  localTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                  locale: 'en',
+                  name: 'startConversation',
+                  type: 'event'
+                }).subscribe();
+
+                subscription.unsubscribe();
+              }
+            }
+          });
+
+          WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('chatContainer'));
+
+          // Hide loading screen after chat is initialized
+          document.getElementById('loadingScreen').style.display = 'none';
+
+          // Show chatbox with smooth slide-in effect
+          document.getElementById('webchat').classList.add('open');
+        }
+
+        // Initialize
+        initializeConversation();
       })();
     </script>
   </body>
