@@ -41,14 +41,14 @@
 
       #switchToAI {
         position: absolute;
-        top: 15px;
+        top: 20px;
         right: 20px;
-        padding: 12px 15px;
+        padding: 12px 20px;
         font-size: 16px;
         background-color: #00809d;
         color: #fff;
         border: none;
-        border-radius: 25px;
+        border-radius: 30px;
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -115,7 +115,7 @@
 
       /* Parallax Effect */
       .parallax {
-        background-image: url('https://media1.giphy.com/media/Ai0FCXmNLpfhQNs0af/giphy.webp?cid=ecf05e47ar9dio9iv86vb4kmcexsrd2arteyut4ijtybf12e&ep=v1_gifs_search&rid=giphy.webp&ct=g');
+        background-image: url('https://media2.giphy.com/media/A608loAlQgF4ag7k4m/giphy.webp?cid=790b7611q9dkjlvhq44pz1dsxtgpy3yv0xgfpxvroj2ugo9w&ep=v1_gifs_search&rid=giphy.webp&ct=g');
         background-attachment: fixed;
         background-position: center;
         background-repeat: no-repeat;
@@ -212,7 +212,7 @@
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
           const apiVersion = tokenEndpointURL.searchParams.get('api-version');
           const [directLineURL, token] = await Promise.all([
-            fetch(new URL(/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}, tokenEndpointURL))
+            fetch(new URL(`/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}`, tokenEndpointURL))
               .then(response => response.json())
               .then(({ channelUrlsById: { directline } }) => directline),
             fetch(tokenEndpointURL)
