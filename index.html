@@ -168,31 +168,34 @@
 
       <!-- Webchat Section -->
       <div id="webchat" role="main">
-        <div id="chatContainer">
-          <!-- Add the Mewah logo -->
-          <img src="https://moigroup.com/wp-content/uploads/2021/11/Mewah-Logo-1.png" alt="Mewah Logo" style="display: block; margin: 0 auto; max-width: 200px; max-height: 100px;">
-        </div>
+        <div id="chatContainer"></div>
       </div>
+    </div>
 
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
     <script>
       (async function () {
+        // Show loading screen during initialization
         document.getElementById('loadingScreen').style.display = 'flex';
-    
+
+        // Show welcome tooltip on first visit
         if (!localStorage.getItem('visited')) {
           localStorage.setItem('visited', 'true');
           document.getElementById('tooltip').style.display = 'block';
           setTimeout(() => {
             document.getElementById('tooltip').style.display = 'none';
-          }, 5000);
+          }, 5000); // Hide tooltip after 5 seconds
         }
-    
+
+        // AI endpoint and API key from environment variables
         const aiEndpoint = '${{ secrets.AI_ENDPOINT }}';
         const aiApiKey = '${{ secrets.AI_API_KEY }}';
-    
+
+        // Default state
         let useAI = false;
-    
+
+        // Style options for webchat
         const styleOptions = {
           accent: '#f7a718',
           botAvatarBackgroundColor: '#FFFFFF',
@@ -200,11 +203,13 @@
           botAvatarInitials: 'M',
           userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
         };
-    
+
+        // Switch button handler
         document.getElementById('switchToAI').addEventListener('click', () => {
           window.open('https://www.office.com/chat?auth=2', '_blank');
         });
-    
+
+        // Initialize conversation
         async function initializeConversation() {
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
           const apiVersion = tokenEndpointURL.searchParams.get('api-version');
@@ -216,9 +221,9 @@
               .then(response => response.json())
               .then(({ token }) => token)
           ]);
-    
+
           const directLine = WebChat.createDirectLine({ domain: new URL('v3/directline', directLineURL), token });
-    
+
           const subscription = directLine.connectionStatus$.subscribe({
             next(value) {
               if (value === 2) {
@@ -228,32 +233,24 @@
                   name: 'startConversation',
                   type: 'event'
                 }).subscribe();
-    
+
                 subscription.unsubscribe();
               }
             }
           });
-    
+
           WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('chatContainer'));
-    
+
+          // Hide loading screen after chat is initialized
           document.getElementById('loadingScreen').style.display = 'none';
+
+          // Show chatbox with smooth slide-in effect
           document.getElementById('webchat').classList.add('open');
-    
-          // Add the Mewah logo to the chat container
-          const logo = document.createElement('img');
-          logo.src = "https://moigroup.com/wp-content/uploads/2021/11/Mewah-Logo-1.png";
-          logo.alt = "Mewah Logo";
-          logo.style.display = "block";
-          logo.style.margin = "0 auto";
-          logo.style.maxWidth = "200px";
-          logo.style.maxHeight = "100px";
-    
-          document.getElementById('chatContainer').prepend(logo); // Adds the logo at the top of the container
         }
-    
+
+        // Initialize
         initializeConversation();
       })();
     </script>
-
   </body>
 </html>
