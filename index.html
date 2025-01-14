@@ -34,7 +34,7 @@
         align-items: center;
         justify-content: center;
         background-color: #f7a718; /* Orange Banner */
-        height: 60px;
+        height: 70px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         border-bottom: 3px solid #f5d50f; /* Elegant bottom border */
       }
@@ -42,22 +42,20 @@
       #switchToAI {
         position: absolute;
         top: 15px;
-        right: 15px;
-        padding: 11px 15px;
-        font-size: 14px;
-        background-color: white; 
-        color: #f7a718; /* Orange text */
+        right: 20px;
+        padding: 12px 15px;
+        font-size: 16px;
+        background-color: #00809d;
+        color: #fff;
         border: none;
-        border-radius: 20px;
+        border-radius: 30px;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
       #switchToAI:hover {
-        background-color:  #f7a718; /* Orange background on hover */
-        color: white; /* White text on hover */
+        background-color: #006e7c;
         transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
       }
 
       /* Chatbox animation */
@@ -88,18 +86,46 @@
         width: 100%;
         height: 100%;
         max-height: 100%;
-        overflow-y: auto; /* Enable scrolling */
+        overflow-y: auto;
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+        border-radius: 20px; /* For a clean look */
+        padding: 15px;
+      }
+
+      /* Loading Screen */
+      #loadingScreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.9);
+        z-index: 10;
+      }
+      #loadingScreen img {
+        width: 60px;
+        height: 60px;
+        animation: spin 2s infinite linear;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
 
       /* Parallax Effect */
       .parallax {
-        background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20201028/pngtree-abstract-technology-background-background-3d-grid-cyber-technology-ai-tech-wire-image_441377.jpg');
+        background-image: url('https://media1.giphy.com/media/Ai0FCXmNLpfhQNs0af/giphy.webp?cid=ecf05e47ar9dio9iv86vb4kmcexsrd2arteyut4ijtybf12e&ep=v1_gifs_search&rid=giphy.webp&ct=g');
         background-attachment: fixed;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-        height: 300px;
-        opacity: 0.7; /* Faded effect */
+        height: 100%; /* Cover the entire chatbox */
+        opacity: 0.8; /* Slightly increase visibility */
+        background-blend-mode: overlay; /* Merge with white */
       }
 
       /* Tooltip */
@@ -133,6 +159,11 @@
       
       <!-- Parallax Effect Section -->
       <div class="parallax"></div>
+
+      <!-- Loading Screen -->
+      <div id="loadingScreen">
+        <img src="https://i.gifer.com/YCZH.gif" alt="loading">
+      </div>
       
       <!-- Tooltip -->
       <div id="tooltip">Welcome! Click the chat icon to start interacting.</div>
