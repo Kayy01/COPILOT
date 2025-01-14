@@ -41,9 +41,9 @@
 
       #switchToAI {
         position: absolute;
-        top: 20px;
+        top: 15px;
         right: 20px;
-        padding: 12px 20px;
+        padding: 12px 15px;
         font-size: 16px;
         background-color: #00809d;
         color: #fff;
@@ -86,7 +86,10 @@
         width: 100%;
         height: 100%;
         max-height: 100%;
-        overflow-y: auto; /* Enable scrolling */
+        overflow-y: auto;
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+        border-radius: 20px; /* For a clean look */
+        padding: 15px;
       }
 
       /* Loading Screen */
@@ -120,8 +123,9 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-        height: 300px;
-        opacity: 0.5; /* Faded effect */
+        height: 100%; /* Cover the entire chatbox */
+        opacity: 0.8; /* Slightly increase visibility */
+        background-blend-mode: overlay; /* Merge with white */
       }
 
       /* Tooltip */
