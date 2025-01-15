@@ -157,6 +157,26 @@
         0% { opacity: 0; }
         100% { opacity: 1; }
       }
+
+      /* Style for pre-prompt question buttons */
+      .prePromptButton {
+        background-color: white;  /* White background */
+        color: #f7a718;  /* Orange text */
+        border: 2px solid #f7a718;  /* Orange border */
+        padding: 10px 20px;
+        margin: 5px;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+    
+      .prePromptButton:hover {
+        background-color: #f7a718;  /* Orange background on hover */
+        color: white;  /* White text on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);  /* Subtle shadow on hover */
+      }
     </style>
   </head>
   <body>
@@ -169,10 +189,10 @@
       <button id="switchToAI">Switch to AI Knowledge</button>
 
       <div id="prePromptQuestions">
-        <button class="prePromptButton" onclick="fillChatbox('What are your business hours?')">What are your business hours?</button>
-        <button class="prePromptButton" onclick="fillChatbox('Can you help me with my order?')">Can you help me with my order?</button>
-        <button class="prePromptButton" onclick="fillChatbox('Tell me about your products.')">Tell me about your products.</button>
-        <button class="prePromptButton" onclick="fillChatbox('How do I contact support?')">How do I contact support?</button>
+        <button class="prePromptButton" onclick="fillChatbox('How do I reset my Portal Password')">How do I reset my Portal Password</button>
+        <button class="prePromptButton" onclick="fillChatbox('What should I do if my computer is running slow?')">What should I do if my computer is running slow?</button>
+        <button class="prePromptButton" onclick="fillChatbox('What are the best practices for data security in our organization?')">What are the best practices for data security in our organization?</button>
+        <button class="prePromptButton" onclick="fillChatbox('What are the important policies')">What are the important policies</button>
       </div>
 
       <!-- Parallax Effect Section -->
