@@ -182,6 +182,24 @@
       <!-- Webchat Section -->
       <div id="webchat" role="main">
         <div id="chatContainer"></div>
+        <div id="prePrompts" style="padding: 20px; text-align: center;">
+          <h2>Need help? Click a question to get started:</h2>
+          <button class="prompt-btn" data-question="How does the organization handle IT incident response?">How does the organization handle IT incident response?</button>
+          <button class="prompt-btn" data-question="What guidelines does the organization have for developing and maintaining in-house software?">What guidelines does the organization have for developing and maintaining in-house software?</button>
+          <button class="prompt-btn" data-question="what are the security policies in this organization">what are the security policies in this organization</button>
+        </div>
+        
+        <div id="chatInputContainer" style="display: flex; justify-content: center; margin: 20px;">
+          <input
+            type="text"
+            id="chatInput"
+            placeholder="Type your message here..."
+            style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;"
+          />
+          <button id="sendButton" style="margin-left: 10px; padding: 10px; background-color: #f7a718; color: white; border: none; border-radius: 5px;">
+            Send
+          </button>
+        </div>
       </div>
     </div>
 
@@ -252,14 +270,43 @@
             }
           });
 
-          WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('chatContainer'));
-
+          WebChat.renderWebChat(
+            { 
+              directLine, 
+              locale: 'en', 
+              styleOptions 
+            }, 
+            document.getElementById('chatContainer')
+          );
+          
           // Hide loading screen after chat is initialized
           document.getElementById('loadingScreen').style.display = 'none';
-
+          
           // Show chatbox with smooth slide-in effect
           document.getElementById('webchat').classList.add('open');
-        }
+          
+          document.addEventListener('DOMContentLoaded', () => {
+            const prePromptButtons = document.querySelectorAll('.prompt-btn');
+            const chatInput = document.getElementById('chatInput');
+          
+            prePromptButtons.forEach(button => {
+              button.addEventListener('click', () => {
+                const question = button.getAttribute('data-question');
+                chatInput.value = question; // Populate chat input with pre-prompt text
+                chatInput.focus(); // Focus on the input field
+              });
+            });
+          
+            const sendButton = document.getElementById('sendButton');
+            sendButton.addEventListener('click', () => {
+              const userInput = chatInput.value.trim();
+              if (userInput) {
+                // Logic to send the input to the chatbot
+                console.log('User input submitted:', userInput); // Replace with chatbot send logic
+                chatInput.value = ''; // Clear the input field
+              }
+            });
+          });
 
         // Initialize
         initializeConversation();
