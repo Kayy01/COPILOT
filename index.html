@@ -11,7 +11,11 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         display: flex;
         flex-direction: column;
-        background-color: white;
+        background-color: white; /* Fallback color if the image fails to load */
+        background-image: url('https://files.ajobthing.com/employers/138981-1624264955.png'); /* Path to your background image */
+        background-size: cover; /* Ensures the image covers the entire screen */
+        background-position: center center; /* Centers the image */
+        background-attachment: fixed; /* Keeps the image fixed during scrolling */
         scroll-behavior: smooth; /* Smooth scrolling */
       }
       body {
