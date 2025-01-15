@@ -214,7 +214,7 @@
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
           const apiVersion = tokenEndpointURL.searchParams.get('api-version');
           const [directLineURL, token] = await Promise.all([
-            fetch(new URL(/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}, tokenEndpointURL))
+            fetch(new URL(`/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}`, tokenEndpointURL))
               .then(response => response.json())
               .then(({ channelUrlsById: { directline } }) => directline),
             fetch(tokenEndpointURL)
