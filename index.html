@@ -167,7 +167,14 @@
       </div>
 
       <button id="switchToAI">Switch to AI Knowledge</button>
-      
+
+      <div id="prePromptQuestions">
+        <button class="prePromptButton" onclick="fillChatbox('What are your business hours?')">What are your business hours?</button>
+        <button class="prePromptButton" onclick="fillChatbox('Can you help me with my order?')">Can you help me with my order?</button>
+        <button class="prePromptButton" onclick="fillChatbox('Tell me about your products.')">Tell me about your products.</button>
+        <button class="prePromptButton" onclick="fillChatbox('How do I contact support?')">How do I contact support?</button>
+      </div>
+
       <!-- Parallax Effect Section -->
       <div class="parallax"></div>
 
@@ -263,7 +270,16 @@
 
         // Initialize
         initializeConversation();
+
       })();
+
+      // Function to auto-fill the chatbox with selected pre-prompt question
+      function fillChatbox(question) {
+        const chatInput = document.querySelector('input[type="text"]'); // Assuming input field exists
+        if (chatInput) {
+          chatInput.value = question;
+        }
+      }  
     </script>
   </body>
 </html>
