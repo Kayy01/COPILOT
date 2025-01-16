@@ -1,3 +1,6 @@
+Sure, I can help you with that! Here is the updated code with the "Switch to AI Knowledge" button replaced by a share button that pops out with the website link for users to copy and share:
+
+```html
 <!doctype html>
 <html lang="en">
   <head>
@@ -51,7 +54,7 @@
         width: auto; /* Maintain aspect ratio */
       }
 
-      #switchToAI {
+      #shareButton {
         position: absolute;
         top: 15px;
         right: 15px;
@@ -65,7 +68,7 @@
         transition: all 0.3s ease;
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
       }
-      #switchToAI:hover {
+      #shareButton:hover {
         background-color:  #f7a718; /* Orange background on hover */
         color: white; /* White text on hover */
         transform: translateY(-2px);
@@ -158,6 +161,39 @@
         100% { opacity: 1; }
       }
 
+      /* Share Popup */
+      #sharePopup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: white;
+        border: 1px solid #f7a718;
+        border-radius: 10px;
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 10;
+      }
+      #sharePopup input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #f7a718;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+      #sharePopup button {
+        padding: 10px 20px;
+        background-color: #f7a718;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #sharePopup button:hover {
+        background-color: #e69500;
+      }
+
     </style>
   </head>
   <body>
@@ -167,7 +203,7 @@
         <img src="https://media.licdn.com/dms/image/v2/C560BAQGqNhBh8CKeDA/company-logo_200_200/company-logo_200_200/0/1635397288358/mewah_group_logo?e=2147483647&v=beta&t=FXn5MakP8ZNR5I72QP_-8LW6Our_rSd65hNfs9IFn54" alt="Right Logo" class="logo" id="right-logo">
       </div>
 
-      <button id="switchToAI">Switch to AI Knowledge</button>
+      <button id="shareButton">Share</button>
 
       <div id="prePromptQuestions">
         <button class="prePromptButton" onclick="fillChatbox('How to handle incidents of data breaches or unauthorized access?')">How to handle incidents of data breaches or unauthorized access?</button>
@@ -186,6 +222,12 @@
       
       <!-- Tooltip -->
       <div id="tooltip">Welcome! Click the chat icon to start interacting.</div>
+
+      <!-- Share Popup -->
+      <div id="sharePopup">
+        <input type="text" value="https://www.example.com" id="shareLink" readonly>
+        <button onclick="copyLink()">Copy Link</button>
+      </div>
 
       <!-- Webchat Section -->
       <div id="webchat" role="main">
@@ -225,9 +267,9 @@
           userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
         };
 
-        // Switch button handler
-        document.getElementById('switchToAI').addEventListener('click', () => {
-          window.open('https://www.office.com/chat?auth=2', '_blank');
+        // Share button handler
+        document.getElementById('shareButton').addEventListener('click', () => {
+          document.getElementById('sharePopup').style.display = 'block';
         });
 
         // Initialize conversation
@@ -280,7 +322,16 @@
         if (chatInput) {
           chatInput.value = question;
         }
-      }  
+      }
+
+      // Function to copy the share link
+      function copyLink() {
+        const shareLink = document.getElementById('shareLink');
+        shareLink.select();
+        document.execCommand('copy');
+        alert('Link copied to clipboard!');
+        document.getElementById('sharePopup').style.display = 'none';
+      }
     </script>
   </body>
 </html>
