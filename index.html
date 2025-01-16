@@ -4,16 +4,16 @@
     <title>MEWAH</title> 
     <link rel="icon" href="https://iportal.ncheo.com/images/logo-Icon1.png" type="image/png">
     <style>
-      /* Global Styles */
-      html, body {
-        height: 100%;
-        margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        flex-direction: column;
-        background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20201028/pngtree-abstract-technology-background-background-3d-grid-cyber-technology-ai-tech-wire-image_441377.jpg');
-        scroll-behavior: smooth; /* Smooth scrolling */
-      }
+       /* Global Styles */
+          html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20201028/pngtree-abstract-technology-background-background-3d-grid-cyber-technology-ai-tech-wire-image_441377.jpg');
+            scroll-behavior: smooth; /* Smooth scrolling */
+          }
       body {
         display: flex;
         flex-direction: column;
@@ -101,7 +101,6 @@
         height: 100%;
         max-height: 100%;
         overflow-y: auto;
-        background: rgba(255, 165, 0, 0.7); /* Faded orange background */
       }
 
       /* Loading Screen */
@@ -225,154 +224,131 @@
 
       <div id="prePromptQuestions">
         <button class="prePromptButton" onclick="fillChatbox('How to handle incidents of data breaches or unauthorized access?')">How to handle incidents of data breaches or unauthorized access?</button>
-      <button class="prePromptButton" onclick="fillChatbox('Practices for purchasing and maintaining software?')">Practices for purchasing and maintaining software?</button>
-      <button class="prePromptButton" onclick="fillChatbox('What are the best practices for data security in Mewah?')">What are the best practices for data security in Mewah?</button>
-      <button class="prePromptButton" onclick="fillChatbox('What are the important policies in Mewah?')">What are the important policies in Mewah?</button>
+        <button class="prePromptButton" onclick="fillChatbox('Practices for purchasing and maintaining software?')">Practices for purchasing and maintaining software?</button>
+        <button class="prePromptButton" onclick="fillChatbox('What are the best practices for data security in Mewah?')">What are the best practices for data security in Mewah?</button>
+        <button class="prePromptButton" onclick="fillChatbox('What are the important policies in Mewah?')">What are the important policies in Mewah?</button>
+      </div>
+
+      <!-- Parallax Effect Section -->
+      <div class="parallax"></div>
+
+      <!-- Loading Screen -->
+      <div id="loadingScreen">
+        <img src="https://i.gifer.com/YCZH.gif" alt="loading">
+      </div>
+      
+      <!-- Tooltip -->
+      <div id="tooltip">Welcome! Click the chat icon to start interacting.</div>
+
+      <!-- Share Popup -->
+      <div id="sharePopup">
+        <input type="text" value="https://brave-rock-0b579250f.4.azurestaticapps.net/" id="shareLink" readonly>
+        <button onclick="copyLink()">Copy Link</button>
+      </div>
+
+      <!-- Webchat Section -->
+      <div id="webchat" role="main">
+        <div id="chatContainer"></div> 
+      </div>
     </div>
 
-    <!-- Parallax Effect Section -->
-    <div class="parallax"></div>
+    <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
-    <!-- Loading Screen -->
-    <div id="loadingScreen">
-      <img src="https://i.gifer.com/YCZH.gif" alt="loading">
-    </div>
-    
-    <!-- Tooltip -->
-    <div id="tooltip">Welcome! Click the chat icon to start interacting.</div>
+    <script>
+      (async function () {
+        // Show loading screen during initialization
+        document.getElementById('loadingScreen').style.display = 'flex';
 
-    <!-- Share Popup -->
-    <div id="sharePopup">
-      <input type="text" value="https://brave-rock-0b579250f.4.azurestaticapps.net/" id="shareLink" readonly>
-      <button onclick="copyLink()">Copy Link</button>
-    </div>
+        // Show welcome tooltip on first visit
+        if (!localStorage.getItem('visited')) {
+          localStorage.setItem('visited', 'true');
+          document.getElementById('tooltip').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('tooltip').style.display = 'none';
+          }, 5000); // Hide tooltip after 5 seconds
+        }
 
-    <!-- Webchat Section -->
-    <div id="webchat" role="main">
-      <div id="chatContainer"></div> 
-    </div>
-  </div>
+        // AI endpoint and API key from environment variables
+        const aiEndpoint = '${{ secrets.AI_ENDPOINT }}';
+        const aiApiKey = '${{ secrets.AI_API_KEY }}';
 
-  <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+        // Default state
+        let useAI = false;
 
-  <script>
-    (async function () {
-      // Show loading screen during initialization
-      document.getElementById('loadingScreen').style.display = 'flex';
+        // Style options for webchat
+        const styleOptions = {
+          accent: '#f7a718',
+          botAvatarBackgroundColor: '#FFFFFF',
+          botAvatarImage: 'https://files.ajobthing.com/employers/131650.png',
+          botAvatarInitials: 'M',
+          userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
+        };
 
-      // Show welcome tooltip on first visit
-      if (!localStorage.getItem('visited')) {
-        localStorage.setItem('visited', 'true');
-        document.getElementById('tooltip').style.display = 'block';
-        setTimeout(() => {
-          document.getElementById('tooltip').style.display = 'none';
-        }, 5000); // Hide tooltip after 5 seconds
-      }
-
-      // AI endpoint and API key from environment variables
-      const aiEndpoint = '${{ secrets.AI_ENDPOINT }}';
-      const aiApiKey = '${{ secrets.AI_API_KEY }}';
-
-      // Default state
-      let useAI = false;
-
-      // Style options for webchat
-      const styleOptions = {
-        accent: '#f7a718',
-        botAvatarBackgroundColor: '#FFFFFF',
-        botAvatarImage: 'https://files.ajobthing.com/employers/131650.png',
-        botAvatarInitials: 'M',
-        userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
-      };
-
-      // Share button handler
-      document.getElementById('shareButton').addEventListener('click', () => {
-        document.getElementById('sharePopup').style.display = 'block';
-      });
-
-      // Initialize conversation
-      async function initializeConversation() {
-        const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
-        const apiVersion = tokenEndpointURL.searchParams.get('api-version');
-        const [directLineURL, token] = await Promise.all([
-          fetch(new URL(`/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}`, tokenEndpointURL))
-            .then(response => response.json())
-            .then(({ channelUrlsById: { directline } }) => directline),
-          fetch(tokenEndpointURL)
-            .then(response => response.json())
-            .then(({ token }) => token)
-        ]);
-
-        const directLine = WebChat.createDirectLine({ domain: new URL('v3/directline', directLineURL), token });
-
-        const subscription = directLine.connectionStatus$.subscribe({
-          next(value) {
-            if (value === 2) {
-              directLine.postActivity({
-                localTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                locale: 'en',
-                name: 'startConversation',
-                type: 'event'
-              }).subscribe();
-
-              subscription.unsubscribe();
-            }
-          }
+        // Share button handler
+        document.getElementById('shareButton').addEventListener('click', () => {
+          document.getElementById('sharePopup').style.display = 'block';
         });
 
-        WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('chatContainer'));
+        // Initialize conversation
+        async function initializeConversation() {
+          const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
+          const apiVersion = tokenEndpointURL.searchParams.get('api-version');
+          const [directLineURL, token] = await Promise.all([
+            fetch(new URL(`/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}`, tokenEndpointURL))
+              .then(response => response.json())
+              .then(({ channelUrlsById: { directline } }) => directline),
+            fetch(tokenEndpointURL)
+              .then(response => response.json())
+              .then(({ token }) => token)
+          ]);
 
-        // Hide loading screen after chat is initialized
-        document.getElementById('loadingScreen').style.display = 'none';
+          const directLine = WebChat.createDirectLine({ domain: new URL('v3/directline', directLineURL), token });
 
-        // Show chatbox with smooth slide-in effect
-        document.getElementById('webchat').classList.add('open');
+          const subscription = directLine.connectionStatus$.subscribe({
+            next(value) {
+              if (value === 2) {
+                directLine.postActivity({
+                  localTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                  locale: 'en',
+                  name: 'startConversation',
+                  type: 'event'
+                }).subscribe();
+
+                subscription.unsubscribe();
+              }
+            }
+          });
+
+          WebChat.renderWebChat({ directLine, locale: 'en', styleOptions }, document.getElementById('chatContainer'));
+
+          // Hide loading screen after chat is initialized
+          document.getElementById('loadingScreen').style.display = 'none';
+
+          // Show chatbox with smooth slide-in effect
+          document.getElementById('webchat').classList.add('open');
+        }
+
+        // Initialize
+        initializeConversation();
+
+      })();
+
+      // Function to auto-fill the chatbox with selected pre-prompt question
+      function fillChatbox(question) {
+        const chatInput = document.querySelector('input[type="text"]'); // Assuming input field exists
+        if (chatInput) {
+          chatInput.value = question;
+        }
       }
 
-      // Initialize
-      initializeConversation();
-
-    })();
-
-    // Function to auto-fill the chatbox with selected pre-prompt question
-    function fillChatbox(question) {
-      const chatInput = document.querySelector('input[type="text"]'); // Assuming input field exists
-      if (chatInput) {
-        chatInput.value = question;
+      // Function to copy the share link
+      function copyLink() {
+        const shareLink = document.getElementById('shareLink');
+        shareLink.select();
+        document.execCommand('copy');
+        alert('Link copied to clipboard!');
+        document.getElementById('sharePopup').style.display = 'none';
       }
-    }
-
-    // Function to copy the share link
-    function copyLink() {
-      const shareLink = document.getElementById('shareLink');
-      shareLink.select();
-      document.execCommand('copy');
-      alert('Link copied to clipboard!');
-      document.getElementById('sharePopup').style.display = 'none';
-    }
-
-    // Chat history feature
-    let chatHistory = [];
-
-    function addMessageToChatHistory(message, sender) {
-      chatHistory.push({ message, sender });
-      displayChatHistory();
-    }
-
-    function displayChatHistory() {
-      const chatContainer = document.getElementById('chatContainer');
-      chatContainer.innerHTML = '';
-      chatHistory.forEach(chat => {
-        const messageElement = document.createElement('div');
-        messageElement.className = chat.sender === 'user' ? 'user-message' : 'bot-message';
-        messageElement.textContent = chat.message;
-        chatContainer.appendChild(messageElement);
-      });
-    }
-
-    // Example usage
-    addMessageToChatHistory('Hello! How can I assist you today?', 'bot');
-    addMessageToChatHistory('I need help with my account.', 'user');
-  </script>
-</body>
+    </script>
+  </body>
 </html>
