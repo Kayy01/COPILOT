@@ -89,7 +89,7 @@
         overflow: hidden;
         transition: all 0.5s ease-in-out;
         backdrop-filter: blur(5px); /* Reduced blur effect */
-        z-index: 5; /* Ensure it appears below the scroll-to-top button */
+        z-index: 5;
       }
       #webchat.open {
         bottom: 0; /* Slide up animation */
@@ -101,8 +101,6 @@
         height: 100%;
         max-height: 100%;
         overflow-y: auto;
-        position: relative;
-        z-index: 5; /* Ensure it appears below the scroll-to-top button */
       }
 
       /* Loading Screen */
@@ -213,45 +211,6 @@
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
       }
 
-      /* Scroll to Top Button */
-      #scrollToTop {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 15px;
-        background-color: #f7a718;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        display: none;
-        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        z-index: 1000; /* Ensure it appears above other elements */
-      }
-      #scrollToTop:hover {
-        background-color: #e69500;
-      }
-
-      /* Chat Icon */
-      #chatIcon {
-        position: fixed;
-        bottom: 20px;
-        right: 80px;
-        padding: 10px 15px;
-        background-color: #f7a718;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        z-index: 1000; /* Ensure it appears above other elements */
-      }
-      #chatIcon:hover {
-        background-color: #e69500;
-      }
-
     </style>
   </head>
   <body>
@@ -291,12 +250,7 @@
       <div id="webchat" role="main">
         <div id="chatContainer"></div> 
       </div>
-
-      <!-- Scroll to Top Button -->
-      <button id="scrollToTop" onclick="scrollToTop()">↑</button>
-
-      <!-- Chat Icon -->
-      <button id="chatIcon" onclick="toggleChat()">💬</button>
+    </div>
 
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
@@ -394,31 +348,6 @@
         document.execCommand('copy');
         alert('Link copied to clipboard!');
         document.getElementById('sharePopup').style.display = 'none';
-      }
-
-      // Function to scroll to top
-      function scrollToTop() {
-        document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      // Show or hide the scroll to top button based on scroll position
-      window.addEventListener('scroll', () => {
-        const scrollToTopButton = document.getElementById('scrollToTop');
-        if (window.scrollY > 200) {
-          scrollToTopButton.style.display = 'block';
-        } else {
-          scrollToTopButton.style.display = 'none';
-        }
-      });
-
-      // Function to toggle chatbox visibility
-      function toggleChat() {
-        const webchat = document.getElementById('webchat');
-        if (webchat.classList.contains('open')) {
-        webchat.classList.remove('open');
-        } else {
-          webchat.classList.add('open');
-        }
       }
     </script>
   </body>
