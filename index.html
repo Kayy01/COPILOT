@@ -101,6 +101,8 @@
         height: 100%;
         max-height: 100%;
         overflow-y: auto;
+        position: relative;
+        z-index: 5; /* Ensure it appears below the scroll-to-top button */
       }
 
       /* Loading Screen */
@@ -205,6 +207,9 @@
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
       }
       .prePromptButton:hover {
+Sure, here's the continuation of your HTML code:
+
+```html
         background-color: #f7a718; /* Orange background on hover */
         color: white; /* White text on hover */
         transform: translateY(-2px);
@@ -396,7 +401,7 @@
 
       // Function to scroll to top
       function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
       // Show or hide the scroll to top button based on scroll position
@@ -413,41 +418,7 @@
       function toggleChat() {
         const webchat = document.getElementById('webchat');
         if (webchat.classList.contains('open')) {
-          webchat.classList.remove('open');
-        } else {
-          webchat.classList.add('open');
-        }
-      }
-
-      // Function to copy the share link
-      function copyLink() {
-        const shareLink = document.getElementById('shareLink');
-        shareLink.select();
-        document.execCommand('copy');
-        alert('Link copied to clipboard!');
-        document.getElementById('sharePopup').style.display = 'none';
-      }
-
-      // Function to scroll to top
-      function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      // Show or hide the scroll to top button based on scroll position
-      window.addEventListener('scroll', () => {
-        const scrollToTopButton = document.getElementById('scrollToTop');
-        if (window.scrollY > 200) {
-          scrollToTopButton.style.display = 'block';
-        } else {
-          scrollToTopButton.style.display = 'none';
-        }
-      });
-
-      // Function to toggle chatbox visibility
-      function toggleChat() {
-        const webchat = document.getElementById('webchat');
-        if (webchat.classList.contains('open')) {
-          webchat.classList.remove('open');
+        webchat.classList.remove('open');
         } else {
           webchat.classList.add('open');
         }
