@@ -51,25 +51,52 @@
         width: auto; /* Maintain aspect ratio */
       }
 
-      #switchToAI {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        padding: 11px 15px;
-        font-size: 14px;
-        background-color: white; 
-        color: #f7a718; /* Orange text */
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-      }
-      #switchToAI:hover {
-        background-color:  #f7a718; /* Orange background on hover */
+      #shareButton:hover {
+        background-color: #f7a718; /* Orange background on hover */
         color: white; /* White text on hover */
         transform: translateY(-2px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+      }
+
+      #sharePopup {
+        position: absolute;
+        top: 70px;
+        right: 15px;
+        padding: 15px;
+        background-color: white;
+        border: 1px solid #f7a718;
+        border-radius: 8px;
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      #sharePopup p {
+        margin: 0 0 10px;
+        font-size: 14px;
+        color: #333;
+      }
+
+      #sharePopup input {
+        width: 100%;
+        padding: 5px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      #sharePopup button {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-color: #f7a718;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      #sharePopup button:hover {
+        background-color: #e6950f;
       }
 
       /* Chatbox animation */
@@ -167,7 +194,31 @@
         <img src="https://media.licdn.com/dms/image/v2/C560BAQGqNhBh8CKeDA/company-logo_200_200/company-logo_200_200/0/1635397288358/mewah_group_logo?e=2147483647&v=beta&t=FXn5MakP8ZNR5I72QP_-8LW6Our_rSd65hNfs9IFn54" alt="Right Logo" class="logo" id="right-logo">
       </div>
 
-      <button id="switchToAI">Switch to AI Knowledge</button>
+      <button id="shareButton">Share</button>
+      <div id="sharePopup">
+        <p>Copy this link to share:</p>
+        <input type="text" id="shareLink" value="https://your-website-link.com" readonly>
+        <button onclick="copyToClipboard()">Copy Link</button>
+      </div>
+
+      <script>
+        const shareButton = document.getElementById('shareButton');
+        const sharePopup = document.getElementById('sharePopup');
+        const shareLink = document.getElementById('shareLink');
+  
+        // Toggle share popup visibility
+        shareButton.addEventListener('click', () => {
+          sharePopup.style.display = sharePopup.style.display === 'block' ? 'none' : 'block';
+        });
+
+      // Copy link to clipboard
+      function copyToClipboard() {
+        shareLink.select();
+        shareLink.setSelectionRange(0, 99999); // For mobile devices
+        navigator.clipboard.writeText(shareLink.value).then(() => {
+          alert('Link copied to clipboard!');
+        });
+      }
 
       <div id="prePromptQuestions">
         <button class="prePromptButton" onclick="fillChatbox('How to handle incidents of data breaches or unauthorized access?')">How to handle incidents of data breaches or unauthorized access?</button>
