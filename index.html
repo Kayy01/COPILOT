@@ -1,3 +1,53 @@
+Let's adjust the `z-index` of the scroll-to-top button and the chat container to ensure the button appears above the chat container. Here's the updated CSS:
+
+```css
+/* Scroll to Top Button */
+#scrollToTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  background-color: #f7a718;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+#scrollToTop:hover {
+  background-color: #e69500;
+}
+
+/* Chatbox animation */
+#webchat {
+  position: fixed;
+  bottom: -100%;
+  width: 100%;
+  height: 70%;
+  background: rgba(255, 255, 255, 0.7); /* Transparent blue-ish background */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  backdrop-filter: blur(5px); /* Reduced blur effect */
+  z-index: 5; /* Ensure it appears below the scroll-to-top button */
+}
+#webchat.open {
+  bottom: 0; /* Slide up animation */
+}
+```
+
+Here's the complete updated HTML with the adjusted `z-index` for the scroll-to-top button and chat container:
+
+```html
 <!doctype html>
 <html lang="en">
   <head>
@@ -89,7 +139,7 @@
         overflow: hidden;
         transition: all 0.5s ease-in-out;
         backdrop-filter: blur(5px); /* Reduced blur effect */
-        z-index: 5;
+        z-index: 5; /* Ensure it appears below the scroll-to-top button */
       }
       #webchat.open {
         bottom: 0; /* Slide up animation */
@@ -226,7 +276,6 @@
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
         z-index: 1000; /* Ensure it appears above other elements */
-  
       }
       #scrollToTop:hover {
         background-color: #e69500;
@@ -245,6 +294,7 @@
         cursor: pointer;
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
+        z-index: 1000; /* Ensure it appears above other elements */
       }
       #chatIcon:hover {
         background-color: #e69500;
@@ -382,6 +432,40 @@
         const chatInput = document.querySelector('input[type="text"]'); // Assuming input field exists
         if (chatInput) {
           chatInput.value = question;
+        }
+      }
+
+      // Function to copy the share link
+      function copyLink() {
+        const shareLink = document.getElementById('shareLink');
+        shareLink.select();
+        document.execCommand('copy');
+        alert('Link copied to clipboard!');
+        document.getElementById('sharePopup').style.display = 'none';
+      }
+
+      // Function to scroll to top
+      function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Show or hide the scroll to top button based on scroll position
+      window.addEventListener('scroll', () => {
+        const scrollToTopButton = document.getElementById('scrollToTop');
+        if (window.scrollY > 200) {
+          scrollToTopButton.style.display = 'block';
+        } else {
+          scrollToTopButton.style.display = 'none';
+        }
+      });
+
+      // Function to toggle chatbox visibility
+      function toggleChat() {
+        const webchat = document.getElementById('webchat');
+        if (webchat.classList.contains('open')) {
+          webchat.classList.remove('open');
+        } else {
+          webchat.classList.add('open');
         }
       }
 
