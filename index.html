@@ -344,9 +344,11 @@
 
       // Function to auto-fill the chatbox with selected pre-prompt question
       function fillChatbox(question) {
-        const chatInput = document.querySelector('input[type="text"]'); // Assuming input field exists
+        const chatInput = document.querySelector('#chatContainer input[type="text"]'); // Adjust the selector to target the chatbox input
         if (chatInput) {
           chatInput.value = question;
+        } else {
+          console.error('Chat input field not found');
         }
       }
       
