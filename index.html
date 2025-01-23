@@ -333,14 +333,6 @@
 
       })();
 
-      // Function to auto-fill the chatbox with selected pre-prompt question
-      function fillChatbox(question) {
-        const chatInput = document.querySelector('input[type="text"]'); // Assuming input field exists
-        if (chatInput) {
-          chatInput.value = question;
-        }
-      }
-
       // Function to copy the share link
       function copyLink() {
         const shareLink = document.getElementById('shareLink');
@@ -349,6 +341,15 @@
         alert('Link copied to clipboard!');
         document.getElementById('sharePopup').style.display = 'none';
       }
+
+      // Function to auto-fill the chatbox with selected pre-prompt question
+      function fillChatbox(question) {
+        const chatInput = document.querySelector('input[type="text"]'); // Assuming input field exists
+        if (chatInput) {
+          chatInput.value = question;
+        }
+      }
+      
     </script>
   </body>
 </html>
