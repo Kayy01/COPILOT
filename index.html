@@ -335,11 +335,9 @@
 
       // Function to auto-fill the chatbox with selected pre-prompt question
       function fillChatbox(question) {
-        const chatInput = document.querySelector('input[type="text"]'); // Ensure this selector matches your chat input field
+        const chatInput = document.querySelector('input[type="text"]'); // Assuming input field exists
         if (chatInput) {
           chatInput.value = question;
-        } else {
-          console.error('Chat input field not found');
         }
       }
 
@@ -354,3 +352,4 @@
     </script>
   </body>
 </html>
+
