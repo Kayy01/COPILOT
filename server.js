@@ -1,55 +1,61 @@
-const express = require("express");
-const fileUpload = require("express-fileupload");
-const fs = require("fs");
-const app = express();
-const PORT = 3000;
+import streamlit as st
+from PyPDF2 import PdfReader
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import FAISS
+from langchain.chains import RetrievalQA
+from langchain.chat_models import ChatOpenAI
 
-// Middleware for handling file uploads
-app.use(fileUpload());
-app.use(express.json());
+# Define the file uploading interface
+def file_upload_interface():
+    st.title("File Upload & QA Chatbot")
+    st.write("Upload a PDF file to ask questions about its content.")
 
-// Endpoint to upload a file
-app.post("/upload", (req, res) => {
-    if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).send("No file was uploaded.");
-    }
+    # File uploader
+    uploaded_file = st.file_uploader("Upload your PDF file", type=["pdf"])
 
-    const uploadedFile = req.files.file;
-    const filePath = `./uploads/${uploadedFile.name}`;
+    if uploaded_file:
+        # Display uploaded file name
+        st.success(f"File '{uploaded_file.name}' uploaded successfully.")
 
-    // Save file to the server
-    uploadedFile.mv(filePath, (err) => {
-        if (err) {
-            return res.status(500).send(err);
-        }
+        # Process file on button click
+        if st.button("Process File and Ask Questions"):
+            process_file(uploaded_file)
 
-        res.send("File uploaded successfully!");
-    });
-});
+def process_file(uploaded_file):
+    # Extract text from the uploaded PDF
+    pdf_reader = PdfReader(uploaded_file)
+    text = ""
+    for page in pdf_reader.pages:
+        text += page.extract_text()
 
-// Endpoint to read and query the file
-app.post("/query", (req, res) => {
-    const { filename, query } = req.body;
+    # Split text into chunks
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    chunks = text_splitter.split_text(text)
 
-    // Ensure the file exists
-    const filePath = `./uploads/${filename}`;
-    if (!fs.existsSync(filePath)) {
-        return res.status(404).send("File not found.");
-    }
+    # Create embeddings and load into FAISS
+    embeddings = OpenAIEmbeddings()
+    knowledge_base = FAISS.from_texts(chunks, embeddings)
 
-    // Read the file content
-    const fileContent = fs.readFileSync(filePath, "utf-8");
+    # Set up the retrieval-based QA system
+    retriever = knowledge_base.as_retriever()
+    qa_chain = RetrievalQA.from_chain_type(
+        llm=ChatOpenAI(),
+        retriever=retriever,
+        return_source_documents=True
+    )
 
-    // Example: Answer a question based on file content
-    if (query.includes("line count")) {
-        const lineCount = fileContent.split("\n").length;
-        return res.json({ answer: `The file has ${lineCount} lines.` });
-    }
+    # Allow the user to ask questions
+    st.subheader("Ask Questions About the File")
+    user_question = st.text_input("Enter your question here:")
 
-    res.json({ answer: "Query not recognized." });
-});
+    if user_question:
+        with st.spinner("Fetching answer..."):
+            response = qa_chain.run(user_question)
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+        st.write("### Answer:")
+        st.write(response)
+
+# Run the file upload interface
+if __name__ == "__main__":
+    file_upload_interface()
