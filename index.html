@@ -72,6 +72,29 @@
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
       }
 
+       /* File Upload section */
+      #fileUploadSection {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        padding: 10px;
+        background-color: white;
+        border-radius: 20px;
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+      }
+
+      #fileUploadSection h3 {
+        margin: 0 10px;
+        font-size: 16px;
+        color: #333;
+      }
+
+      #fileInput {
+        margin-right: 10px;
+      }
+
       /* Chatbox animation */
       #webchat {
         position: fixed;
@@ -209,26 +232,6 @@
         color: white; /* White text on hover */
         transform: translateY(-2px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
-      }
-
-      /* File Upload Section */
-      #fileUpload {
-        position: absolute;
-        top: 100px;
-        left: 20px;
-        z-index: 10;
-        padding: 10px;
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-      }
-      #fileUpload h3 {
-        margin: 0;
-        padding: 0;
-      }
-      #fileUpload input,
-      #fileUpload button {
-        margin-top: 10px;
       }
 
     </style>
@@ -396,6 +399,16 @@
         alert('Link copied to clipboard!');
         document.getElementById('sharePopup').style.display = 'none';
       }
+
+      // File upload logic
+      document.getElementById('uploadButton').onclick = function () {
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput.files.length > 0) {
+          alert('File uploaded: ' + fileInput.files[0].name);
+        } else {
+          alert('Please select a file to upload');
+        }
+        
 
       // Function to auto-fill the chatbox with selected pre-prompt question
       function fillChatbox(question) {
