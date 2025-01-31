@@ -4,20 +4,25 @@
     <title>MEWAH</title> 
     <link rel="icon" href="https://iportal.ncheo.com/images/logo-Icon1.png" type="image/png">
     <style>
-       /* Global Styles */
-          html, body {
-            height: 100%;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20201028/pngtree-abstract-technology-background-background-3d-grid-cyber-technology-ai-tech-wire-image_441377.jpg');
-            scroll-behavior: smooth; /* Smooth scrolling */
-          }
+      /* Global Styles */
+      html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20201028/pngtree-abstract-technology-background-background-3d-grid-cyber-technology-ai-tech-wire-image_441377.jpg');
+        background-size: cover;
+        background-position: center;
+        scroll-behavior: smooth;
+      }
+      
       body {
         display: flex;
         flex-direction: column;
+        height: 100%;
       }
+
       h1 {
         color: white;
         font-size: 24px;
@@ -28,78 +33,56 @@
         text-align: center;
       }
 
-      /* Classy White & Orange theme */
+      /* Banner Styles */
       #banner {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #f7a718; /* Orange Banner */
+        background-color: #f7a718;
         height: 60px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        border-bottom: 3px solid #f5d50f; /* Elegant bottom border */
+        border-bottom: 3px solid #f5d50f;
       }
+
       #banner h1 {
         color: white;
         font-size: 24px;
-        line-height: 32px;
         font-weight: 600;
-        margin: 0 10px; /* Add spacing between the text and logos */
+        margin: 0 10px;
       }
-      
+
       .logo {
-        height: 32px; /* Matches the line-height of the text */
-        width: auto; /* Maintain aspect ratio */
+        height: 32px;
+        width: auto;
       }
-      
-      #shareButton {
-        position: absolute;
-        top: 15px;
-        right: 15px;
+
+      /* Button Styles */
+      button {
         padding: 11px 15px;
         font-size: 14px;
         background-color: white; 
-        color: #f7a718; /* Orange text */
+        color: #f7a718;
         border: none;
         border-radius: 20px;
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
       }
-      #shareButton:hover {
-        background-color:  #f7a718; /* Orange background on hover */
-        color: white; /* White text on hover */
+
+      button:hover {
+        background-color: #f7a718;
+        color: white;
         transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       }
 
-       #uploadButton {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        padding: 11px 15px;
-        font-size: 14px;
-        background-color: white; 
-        color: #f7a718; /* Orange text */
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-      }
-      #uploadButton:hover {
-        background-color:  #f7a718; /* Orange background on hover */
-        color: white; /* White text on hover */
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
-      }
-
-      /* Chatbox animation */
+      /* Chatbox Styles */
       #webchat {
         position: fixed;
         bottom: -100%;
         width: 100%;
         height: 70%;
-        background: rgba(255, 255, 255, 0.7); /* Transparent blue-ish background */
+        background: rgba(255, 255, 255, 0.7);
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
         box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
@@ -109,54 +92,12 @@
         align-items: center;
         overflow: hidden;
         transition: all 0.5s ease-in-out;
-        backdrop-filter: blur(5px); /* Reduced blur effect */
+        backdrop-filter: blur(5px);
         z-index: 5;
       }
+
       #webchat.open {
-        bottom: 0; /* Slide up animation */
-      }
-
-      /* Chat container scroll setup */
-      #chatContainer {
-        width: 100%;
-        height: 100%;
-        max-height: 100%;
-        overflow-y: auto;
-      }
-
-      /* Loading Screen */
-      #loadingScreen {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.9);
-        z-index: 10;
-      }
-      #loadingScreen img {
-        width: 60px;
-        height: 60px;
-        animation: spin 2s infinite linear;
-      }
-
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-
-      /* Parallax Effect */
-      .parallax {
-        background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20201028/pngtree-abstract-technology-background-background-3d-grid-cyber-technology-ai-tech-wire-image_441377.jpg');
-        background-attachment: fixed;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        height: 300px;
-        opacity: 0.7; /* Faded effect */
+        bottom: 0;
       }
 
       /* Tooltip */
@@ -179,105 +120,100 @@
         100% { opacity: 1; }
       }
 
-      /* Share Popup */
-      #sharePopup {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 20px;
-        background-color: white;
-        border: 1px solid #f7a718;
-        border-radius: 10px;
-        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-        display: none;
-        z-index: 10;
-      }
-      #sharePopup input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #f7a718;
-        border-radius: 5px;
-        margin-bottom: 10px;
-      }
-      #sharePopup button {
-        padding: 10px 20px;
-        background-color: #f7a718;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      #sharePopup button:hover {
-        background-color: #e69500;
-      }
-
       /* Pre-Prompt Button Styles */
       .prePromptButton {
         background-color: white;
-        color: #f7a718; /* Orange text */
-        border: 2px solid #f7a718; /* Orange border */
+        color: #f7a718;
+        border: 2px solid #f7a718;
         border-radius: 20px;
-        padding: 5px 10px; /* Adjusted padding */
-        margin: 5px 0; /* Adjusted margin */
+        padding: 5px 10px;
+        margin: 5px 0;
         font-size: 14px;
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
       }
+
       .prePromptButton:hover {
-        background-color: #f7a718; /* Orange background on hover */
-        color: white; /* White text on hover */
+        background-color: #f7a718;
+        color: white;
         transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Loading Screen */
+      #loadingScreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.9);
+        z-index: 10;
+      }
+
+      #loadingScreen img {
+        width: 60px;
+        height: 60px;
+        animation: spin 2s infinite linear;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* File Upload Styles */
+      #fileInputContainer {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      input[type="file"] {
+        margin-bottom: 10px;
       }
 
     </style>
   </head>
   <body>
-      <div id="banner">
-        <img src="https://media.licdn.com/dms/image/v2/C560BAQGqNhBh8CKeDA/company-logo_200_200/company-logo_200_200/0/1635397288358/mewah_group_logo?e=2147483647&v=beta&t=FXn5MakP8ZNR5I72QP_-8LW6Our_rSd65hNfs9IFn54" alt="Left Logo" class="logo" id="left-logo">
-        <h1>Mewah Virtual Assistant</h1>
-        <img src="https://media.licdn.com/dms/image/v2/C560BAQGqNhBh8CKeDA/company-logo_200_200/company-logo_200_200/0/1635397288358/mewah_group_logo?e=2147483647&v=beta&t=FXn5MakP8ZNR5I72QP_-8LW6Our_rSd65hNfs9IFn54" alt="Right Logo" class="logo" id="right-logo">
-      </div>
+    <div id="banner">
+      <img src="https://media.licdn.com/dms/image/v2/C560BAQGqNhBh8CKeDA/company-logo_200_200/company-logo_200_200/0/1635397288358/mewah_group_logo?e=2147483647&v=beta&t=FXn5MakP8ZNR5I72QP_-8LW6Our_rSd65hNfs9IFn54" alt="Left Logo" class="logo" id="left-logo">
+      <h1>Mewah Virtual Assistant</h1>
+      <img src="https://media.licdn.com/dms/image/v2/C560BAQGqNhBh8CKeDA/company-logo_200_200/company-logo_200_200/0/1635397288358/mewah_group_logo?e=2147483647&v=beta&t=FXn5MakP8ZNR5I72QP_-8LW6Our_rSd65hNfs9IFn54" alt="Right Logo" class="logo" id="right-logo">
+    </div>
 
-      <button id="shareButton">Share</button>
+    <button id="shareButton">Share</button>
 
-      <div id="prePromptQuestions">
-        <button class="prePromptButton" onclick="fillChatbox('How to handle incidents of data breaches or unauthorized access?')">How to handle incidents of data breaches or unauthorized access?</button>
-        <button class="prePromptButton" onclick="fillChatbox('Practices for purchasing and maintaining software?')">Practices for purchasing and maintaining software?</button>
-        <button class="prePromptButton" onclick="fillChatbox('What are the best practices for data security in Mewah?')">What are the best practices for data security in Mewah?</button>
-        <button class="prePromptButton" onclick="fillChatbox('What are the important policies in Mewah?')">What are the important policies in Mewah?</button>
-      </div>
+    <div id="prePromptQuestions">
+      <button class="prePromptButton" onclick="fillChatbox('How to handle incidents of data breaches or unauthorized access?')">How to handle incidents of data breaches or unauthorized access?</button>
+      <button class="prePromptButton" onclick="fillChatbox('Practices for purchasing and maintaining software?')">Practices for purchasing and maintaining software?</button>
+      <button class="prePromptButton" onclick="fillChatbox('What are the best practices for data security in Mewah?')">What are the best practices for data security in Mewah?</button>
+      <button class="prePromptButton" onclick="fillChatbox('What are the important policies in Mewah?')">What are the important policies in Mewah?</button>
+    </div>
 
-      <!-- Parallax Effect Section -->
-      <div class="parallax"></div>
+    <div class="parallax"></div>
 
-      <!-- Loading Screen -->
-      <div id="loadingScreen">
-        <img src="https://i.gifer.com/YCZH.gif" alt="loading">
-      </div>
-      
-      <!-- Tooltip -->
-      <div id="tooltip">Welcome! Click the chat icon to start interacting.</div>
+    <div id="loadingScreen">
+      <img src="https://i.gifer.com/YCZH.gif" alt="loading">
+    </div>
+    
+    <div id="tooltip">Welcome! Click the chat icon to start interacting.</div>
 
-      <!-- Share Popup -->
-      <div id="sharePopup">
-        <input type="text" value="https://brave-rock-0b579250f.4.azurestaticapps.net/" id="shareLink" readonly>
-        <button onclick="copyLink()">Copy Link</button>
-      </div>
+    <div id="sharePopup">
+      <input type="text" value="https://brave-rock-0b579250f.4.azurestaticapps.net/" id="shareLink" readonly>
+      <button onclick="copyLink()">Copy Link</button>
+    </div>
 
-      <!-- File Upload -->
-      <div id="Upload your file">
-        <input type="file" id="fileInput" accept=".pdf, .xlsx" />
-        <button id="uploadButton">Upload</button>
-      </div>
+    <div id="fileInputContainer">
+      <input type="file" id="fileInput" accept=".pdf, .xlsx" />
+      <button id="uploadButton">Upload</button>
+    </div>
 
-
-      <!-- Webchat Section -->
-      <div id="webchat" role="main">
-        <div id="chatContainer"></div> 
-      </div>
+    <div id="webchat" role="main">
+      <div id="chatContainer"></div> 
     </div>
 
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
