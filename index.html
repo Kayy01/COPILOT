@@ -212,21 +212,26 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        width: 300px;
+        max-width: 90%;
         padding: 20px;
         background-color: white;
         border: 1px solid #f7a718;
         border-radius: 10px;
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
         display: none;
-        z-index: 10;
+        z-index: 1000; /* Ensures it's above other elements */
       }
+      
       #sharePopup input {
         width: 100%;
         padding: 10px;
         border: 1px solid #f7a718;
         border-radius: 5px;
         margin-bottom: 10px;
+        outline: none;
       }
+      
       #sharePopup button {
         padding: 10px 20px;
         background-color: #f7a718;
@@ -234,9 +239,23 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        transition: background 0.3s ease;
       }
+      
       #sharePopup button:hover {
         background-color: #e69500;
+      }
+      
+      /* Optional Close Button */
+      #sharePopup .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #f7a718;
       }
 
       /* Pre-Prompt Button Styles */
