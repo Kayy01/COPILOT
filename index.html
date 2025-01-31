@@ -289,6 +289,38 @@
           document.getElementById('sharePopup').style.display = 'block';
         });
 
+        async function sendMessage() {
+          const userInput = document.getElementById("userInput").value;
+          const responseContainer = document.getElementById("chatContainer");
+  
+          // Show loading screen or placeholder message
+          responseContainer.innerHTML += "<p>Loading...</p>";
+  
+          try {
+            // Make API call to backend
+            const response = await fetch('http://127.0.0.1:8000/ask', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ user_message: userInput })
+            });
+  
+            const data = await response.json();
+            const botMessage = data.response;
+  
+            // Add bot's response to the chat
+            responseContainer.innerHTML += `<p><strong>Bot:</strong> ${botMessage}</p>`;
+  
+          } catch (error) {
+            console.error("Error:", error);
+            responseContainer.innerHTML += "<p><strong>Error:</strong> Something went wrong. Please try again.</p>";
+          }
+  
+          // Clear user input
+          document.getElementById("userInput").value = "";
+        }
+        
         // Initialize conversation
         async function initializeConversation() {
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
