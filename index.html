@@ -293,6 +293,8 @@
       </div>
     </div>
 
+    <!-- PDF.js Library for Parsing PDF Files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
     <script>
@@ -329,27 +331,6 @@
         document.getElementById('shareButton').addEventListener('click', () => {
           document.getElementById('sharePopup').style.display = 'block';
         });
-        
-        // File upload handling
-        document.getElementById('fileInput').addEventListener('change', handleFileUpload);
-
-        // Function to handle file upload
-        function handleFileUpload(event) {
-          const file = event.target.files[0];
-          if (file) {
-            const formData = new FormData();
-            formData.append('file', file);
-
-            // Display the uploaded file details in the chat
-            const responseContainer = document.getElementById("chatContainer");
-            responseContainer.innerHTML += `<p><strong>File Uploaded:</strong> ${file.name}</p>`;
-            responseContainer.innerHTML += `<p><strong>Size:</strong> ${file.size} bytes</p>`;
-            responseContainer.innerHTML += `<p><strong>Type:</strong> ${file.type}</p>`;
-
-            // Send the file to the backend or handle it as needed
-            // Example: sendFileToBackend(formData);
-          }
-        }
         
         async function sendMessage() {
           const userInput = document.getElementById("userInput").value;
@@ -445,6 +426,67 @@
           console.error('Chat input field not found');
         }
       }
+          // Handle file upload
+          document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+
+          // Function to handle file upload
+          async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const fileType = file.type;
+            const fileName = file.name;
+
+            // Display file info in the chat
+            const responseContainer = document.getElementById("chatContainer");
+            responseContainer.innerHTML += `<p><strong>File Uploaded:</strong> ${fileName}</p>`;
+            responseContainer.innerHTML += `<p><strong>Size:</strong> ${file.size} bytes</p>`;
+            responseContainer.innerHTML += `<p><strong>Type:</strong> ${fileType}</p>`;
+
+            if (fileType === 'application/pdf') {
+              // If it's a PDF file, extract text from the PDF
+              const text = await extractTextFromPDF(file);
+              responseContainer.innerHTML += `<p><strong>Extracted Text:</strong></p><pre>${text}</pre>`;
+            } else if (fileType === 'text/plain') {
+              // For text files, just read them
+              const text = await readTextFile(file);
+              responseContainer.innerHTML += `<p><strong>Extracted Text:</strong></p><pre>${text}</pre>`;
+            } else {
+              responseContainer.innerHTML += `<p><strong>Unsupported file type!</strong></p>`;
+            }
+          }
+
+          // Function to read text files
+          function readTextFile(file) {
+            return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = function () {
+                resolve(reader.result);
+              };
+              reader.onerror = reject;
+              reader.readAsText(file);
+            });
+          }
+
+          // Function to extract text from a PDF using PDF.js
+          async function extractTextFromPDF(file) {
+            const fileReader = new FileReader();
+            return new Promise((resolve, reject) => {
+              fileReader.onload = async function () {
+                const typedarray = new Uint8Array(this.result);
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                let text = '';
+                for (let i = 0; i < pdf.numPages; i++) {
+                  const page = await pdf.getPage(i + 1);
+                  const textContent = await page.getTextContent();
+                  text += textContent.items.map(item => item.str).join(' ') + '\n';
+                }
+                resolve(text);
+              };
+              fileReader.onerror = reject;
+              fileReader.readAsArrayBuffer(file);
+            });
+          }
       
     </script>
   </body>
