@@ -251,6 +251,14 @@
         <div id="chatContainer"></div> 
       </div>
     </div>
+    
+     <!-- File Upload -->
+    <div>
+      <h3>Upload your file</h3>
+      <input type="file" id="fileInput" accept=".pdf, .xlsx" />
+      <button id="uploadButton">Upload</button>
+  </div>
+
 
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
@@ -283,6 +291,33 @@
           botAvatarInitials: 'M',
           userAvatarImage: 'https://files.ajobthing.com/employers/131650.png'
         };
+
+        document.getElementById('uploadButton').addEventListener('click', async function() {
+          const fileInput = document.getElementById('fileInput');
+          const file = fileInput.files[0];
+          if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+      
+            try {
+              const response = await fetch('http://localhost:8000/uploadfile/', {
+                method: 'POST',
+                body: formData
+              });
+      
+              if (response.ok) {
+                const data = await response.json();
+                alert('File uploaded successfully: ' + JSON.stringify(data));
+              } else {
+                alert('Error uploading file.');
+              }
+            } catch (error) {
+              alert('Error uploading file: ' + error.message);
+            }
+          } else {
+            alert('Please select a file to upload.');
+          }
+        });
 
         // Share button handler
         document.getElementById('shareButton').addEventListener('click', () => {
