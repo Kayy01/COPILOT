@@ -72,11 +72,29 @@
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
       }
 
-     /* File upload styling */
+      /* File upload styling */
       #fileUpload {
-        margin-top: 20px;
-        text-align: center;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        padding: 10px 15px;
+        font-size: 14px;
+        background-color: white; 
+        color: #f7a718; /* Orange text */
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
       }
+      #fileUpload:hover {
+        background-color:  #f7a718; /* Orange background on hover */
+        color: white; /* White text on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+      }
+
+      /* File input styling */
       #fileUpload input[type="file"] {
         padding: 10px;
         font-size: 14px;
