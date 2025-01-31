@@ -72,6 +72,27 @@
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
       }
 
+       #fileeButton {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        padding: 11px 15px;
+        font-size: 14px;
+        background-color: white; 
+        color: #f7a718; /* Orange text */
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+      }
+      #fileButton:hover {
+        background-color:  #f7a718; /* Orange background on hover */
+        color: white; /* White text on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+      }
+
       /* Chatbox animation */
       #webchat {
         position: fixed;
@@ -246,6 +267,13 @@
         <button onclick="copyLink()">Copy Link</button>
       </div>
 
+      <!-- File Upload -->
+      <div id="Upload your file">
+        <input type="file" id="fileInput" accept=".pdf, .xlsx" />
+        <button id="uploadButton">Upload</button>
+      </div>
+
+
       <!-- Webchat Section -->
       <div id="webchat" role="main">
         <div id="chatContainer"></div> 
@@ -287,6 +315,33 @@
         // Share button handler
         document.getElementById('shareButton').addEventListener('click', () => {
           document.getElementById('sharePopup').style.display = 'block';
+        });
+
+        document.getElementById('uploadButton').addEventListener('click', async function() {
+          const fileInput = document.getElementById('fileInput');
+          const file = fileInput.files[0];
+          if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+      
+            try {
+              const response = await fetch('http://localhost:8000/uploadfile/', {
+                method: 'POST',
+                body: formData
+              });
+      
+              if (response.ok) {
+                const data = await response.json();
+                alert('File uploaded successfully: ' + JSON.stringify(data));
+              } else {
+                alert('Error uploading file.');
+              }
+            } catch (error) {
+              alert('Error uploading file: ' + error.message);
+            }
+          } else {
+            alert('Please select a file to upload.');
+          }
         });
 
         // Initialize conversation
