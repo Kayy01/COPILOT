@@ -72,6 +72,23 @@
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
       }
 
+     /* File upload styling */
+      #fileUpload {
+        margin-top: 20px;
+        text-align: center;
+      }
+      #fileUpload input[type="file"] {
+        padding: 10px;
+        font-size: 14px;
+        border: 2px solid #f7a718;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #fileUpload p {
+        color: white;
+        font-size: 16px;
+      }
+
       /* Chatbox animation */
       #webchat {
         position: fixed;
@@ -246,6 +263,12 @@
         <button onclick="copyLink()">Copy Link</button>
       </div>
 
+    <!-- File Upload -->
+      <div id="fileUpload">
+        <p>Upload a file to extract information</p>
+        <input type="file" id="fileInput" />
+      </div>
+
       <!-- Webchat Section -->
       <div id="webchat" role="main">
         <div id="chatContainer"></div> 
@@ -288,7 +311,28 @@
         document.getElementById('shareButton').addEventListener('click', () => {
           document.getElementById('sharePopup').style.display = 'block';
         });
+        
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', handleFileUpload);
 
+        // Function to handle file upload
+        function handleFileUpload(event) {
+          const file = event.target.files[0];
+          if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // Display the uploaded file details in the chat
+            const responseContainer = document.getElementById("chatContainer");
+            responseContainer.innerHTML += `<p><strong>File Uploaded:</strong> ${file.name}</p>`;
+            responseContainer.innerHTML += `<p><strong>Size:</strong> ${file.size} bytes</p>`;
+            responseContainer.innerHTML += `<p><strong>Type:</strong> ${file.type}</p>`;
+
+            // Send the file to the backend or handle it as needed
+            // Example: sendFileToBackend(formData);
+          }
+        }
+        
         async function sendMessage() {
           const userInput = document.getElementById("userInput").value;
           const responseContainer = document.getElementById("chatContainer");
