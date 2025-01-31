@@ -72,41 +72,6 @@
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
       }
 
-      /* File upload styling */
-      #fileUpload {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        padding: 10px 15px;
-        font-size: 14px;
-        background-color: white; 
-        color: #f7a718; /* Orange text */
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-      }
-      #fileUpload:hover {
-        background-color:  #f7a718; /* Orange background on hover */
-        color: white; /* White text on hover */
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
-      }
-
-      /* File input styling */
-      #fileUpload input[type="file"] {
-        padding: 10px;
-        font-size: 14px;
-        border: 2px solid #f7a718;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      #fileUpload p {
-        color: white;
-        font-size: 16px;
-      }
-
       /* Chatbox animation */
       #webchat {
         position: fixed;
@@ -281,20 +246,12 @@
         <button onclick="copyLink()">Copy Link</button>
       </div>
 
-    <!-- File Upload -->
-      <div id="fileUpload">
-        <p>Upload a file to extract information</p>
-        <input type="file" id="fileInput" />
-      </div>
-
       <!-- Webchat Section -->
       <div id="webchat" role="main">
         <div id="chatContainer"></div> 
       </div>
     </div>
 
-    <!-- PDF.js Library for Parsing PDF Files -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
     <script>
@@ -331,39 +288,7 @@
         document.getElementById('shareButton').addEventListener('click', () => {
           document.getElementById('sharePopup').style.display = 'block';
         });
-        
-        async function sendMessage() {
-          const userInput = document.getElementById("userInput").value;
-          const responseContainer = document.getElementById("chatContainer");
-  
-          // Show loading screen or placeholder message
-          responseContainer.innerHTML += "<p>Loading...</p>";
-  
-          try {
-            // Make API call to backend
-            const response = await fetch('http://127.0.0.1:8000/ask', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ user_message: userInput })
-            });
-  
-            const data = await response.json();
-            const botMessage = data.response;
-  
-            // Add bot's response to the chat
-            responseContainer.innerHTML += `<p><strong>Bot:</strong> ${botMessage}</p>`;
-  
-          } catch (error) {
-            console.error("Error:", error);
-            responseContainer.innerHTML += "<p><strong>Error:</strong> Something went wrong. Please try again.</p>";
-          }
-  
-          // Clear user input
-          document.getElementById("userInput").value = "";
-        }
-        
+
         // Initialize conversation
         async function initializeConversation() {
           const tokenEndpointURL = new URL('https://default391ffc51be994961871d95b34bd4f8.c7.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr579_coPilotTRK6Gq/directline/token?api-version=2022-03-01-preview');
@@ -426,67 +351,6 @@
           console.error('Chat input field not found');
         }
       }
-          // Handle file upload
-          document.getElementById('fileInput').addEventListener('change', handleFileUpload);
-
-          // Function to handle file upload
-          async function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const fileType = file.type;
-            const fileName = file.name;
-
-            // Display file info in the chat
-            const responseContainer = document.getElementById("chatContainer");
-            responseContainer.innerHTML += `<p><strong>File Uploaded:</strong> ${fileName}</p>`;
-            responseContainer.innerHTML += `<p><strong>Size:</strong> ${file.size} bytes</p>`;
-            responseContainer.innerHTML += `<p><strong>Type:</strong> ${fileType}</p>`;
-
-            if (fileType === 'application/pdf') {
-              // If it's a PDF file, extract text from the PDF
-              const text = await extractTextFromPDF(file);
-              responseContainer.innerHTML += `<p><strong>Extracted Text:</strong></p><pre>${text}</pre>`;
-            } else if (fileType === 'text/plain') {
-              // For text files, just read them
-              const text = await readTextFile(file);
-              responseContainer.innerHTML += `<p><strong>Extracted Text:</strong></p><pre>${text}</pre>`;
-            } else {
-              responseContainer.innerHTML += `<p><strong>Unsupported file type!</strong></p>`;
-            }
-          }
-
-          // Function to read text files
-          function readTextFile(file) {
-            return new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = function () {
-                resolve(reader.result);
-              };
-              reader.onerror = reject;
-              reader.readAsText(file);
-            });
-          }
-
-          // Function to extract text from a PDF using PDF.js
-          async function extractTextFromPDF(file) {
-            const fileReader = new FileReader();
-            return new Promise((resolve, reject) => {
-              fileReader.onload = async function () {
-                const typedarray = new Uint8Array(this.result);
-                const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                let text = '';
-                for (let i = 0; i < pdf.numPages; i++) {
-                  const page = await pdf.getPage(i + 1);
-                  const textContent = await page.getTextContent();
-                  text += textContent.items.map(item => item.str).join(' ') + '\n';
-                }
-                resolve(text);
-              };
-              fileReader.onerror = reject;
-              fileReader.readAsArrayBuffer(file);
-            });
-          }
       
     </script>
   </body>
