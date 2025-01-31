@@ -28,6 +28,74 @@
         text-align: center;
       }
 
+        #welcomePage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #f7a718, #f5d50f);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            z-index: 100;
+        }
+
+        #welcomePage img {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+
+        #guidelines {
+            max-width: 600px;
+            background: white;
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        #enterButton {
+            background: white;
+            color: #f7a718;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #enterButton:hover {
+            background: #f7a718;
+            color: white;
+        }
+
+        #mainContent {
+            display: none;
+            text-align: center;
+        }
+
+        #chatButton {
+            margin-top: 20px;
+            background: #f7a718;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #chatButton:hover {
+            background: #e69500;
+        }
+      
       /* Classy White & Orange theme */
       #banner {
         display: flex;
@@ -214,6 +282,28 @@
     </style>
   </head>
   <body>
+
+    <!-- Welcome Page -->
+    <div id="welcomePage">
+        <img src="https://media.licdn.com/dms/image/v2/C560BAQGqNhBh8CKeDA/company-logo_200_200/company-logo_200_200/0/1635397288358/mewah_group_logo?e=2147483647&v=beta&t=FXn5MakP8ZNR5I72QP_-8LW6Our_rSd65hNfs9IFn54" alt="Mewah Logo">
+        <h1>Welcome to Mewah Virtual Assistant</h1>
+        <div id="guidelines">
+            <p><strong>Guidelines:</strong></p>
+            <p>1. Use the chatbot responsibly for official queries.</p>
+            <p>2. Ensure confidentiality when discussing sensitive information.</p>
+            <p>3. Follow company policies when seeking guidance.</p>
+        </div>
+        <button id="enterButton" onclick="enterSite()">Proceed to Chat</button>
+    </div>
+    
+    <!-- Main Content -->
+    <div id="mainContent">
+        <h1>Mewah Virtual Assistant</h1>
+        <button id="chatButton" onclick="showChatbot()">Start Chat</button>
+        <div id="webchat" style="display: none; width: 100%; height: 400px; background: rgba(255, 255, 255, 0.9); margin-top: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
+        </div>
+    </div>
+    
       <div id="banner">
         <img src="https://media.licdn.com/dms/image/v2/C560BAQGqNhBh8CKeDA/company-logo_200_200/company-logo_200_200/0/1635397288358/mewah_group_logo?e=2147483647&v=beta&t=FXn5MakP8ZNR5I72QP_-8LW6Our_rSd65hNfs9IFn54" alt="Left Logo" class="logo" id="left-logo">
         <h1>Mewah Virtual Assistant</h1>
@@ -333,6 +423,15 @@
 
       })();
 
+      function enterSite() {
+        document.getElementById("welcomePage").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+        }
+
+      function showChatbot() {
+        document.getElementById("webchat").style.display = "block";
+        }
+      
       // Function to copy the share link
       function copyLink() {
         const shareLink = document.getElementById('shareLink');
