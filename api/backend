@@ -1,0 +1,44 @@
+# backend.py (FastAPI)
+from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import JSONResponse
+from io import BytesIO
+import pandas as pd
+import PyPDF2  # For processing PDFs
+import pytesseract  # For OCR in case of images
+
+app = FastAPI()
+
+@app.post("/uploadfile/")
+async def upload_file(file: UploadFile = File(...)):
+    try:
+        file_contents = await file.read()
+        
+        # Process PDF or Excel, assuming we're dealing with PDFs or Excel files.
+        if file.filename.endswith(".pdf"):
+            text = extract_pdf_text(file_contents)
+        elif file.filename.endswith(".xlsx") or file.filename.endswith(".xls"):
+            text = extract_excel_data(file_contents)
+        else:
+            return JSONResponse(status_code=400, content={"message": "Invalid file type"})
+
+        # Process the text data (just as an example, you can modify according to your needs)
+        processed_data = {"extracted_data": text}
+
+        return JSONResponse(status_code=200, content=processed_data)
+    
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"message": str(e)})
+
+def extract_pdf_text(file_contents: bytes) -> str:
+    # Example function to extract text from PDF
+    reader = PyPDF2.PdfReader(BytesIO(file_contents))
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text()
+    return text
+
+def extract_excel_data(file_contents: bytes) -> str:
+    # Example function to extract data from Excel
+    df = pd.read_excel(BytesIO(file_contents))
+    return df.to_string()
+
