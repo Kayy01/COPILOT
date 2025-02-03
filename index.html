@@ -251,14 +251,15 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 10px; /* Adjust spacing between buttons */
-        width: 100%;
+        align-items: center; /* Fixes vertical misalignment */
+        gap: 15px;
+        width: fit-content; /* Prevents full-width stretching */
         position: absolute;
-        top: 50%; /* Adjust this if needed */
+        top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
       }
-      
+
       /* Pre-Prompt Button Styles */
       .prePromptButton {
         background-color: white;
@@ -270,7 +271,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-        width: 150px; /* Adjust width if necessary */
+        width: 200px; /* Adjust width if necessary */
         text-align: center;
       }
       
