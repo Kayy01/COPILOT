@@ -309,6 +309,12 @@
 
       <button id="shareButton">Share</button>
 
+      <!-- Webchat Section -->
+      <div id="webchat" role="main">
+        <div id="chatContainer"></div> 
+      </div>
+    </div>
+    
       <div id="prePromptQuestions">
         <button class="prePromptButton" onclick="fillChatbox('How to handle incidents of data breaches or unauthorized access?')">How to handle incidents of data breaches or unauthorized access?</button>
         <button class="prePromptButton" onclick="fillChatbox('Practices for purchasing and maintaining software?')">Practices for purchasing and maintaining software?</button>
@@ -334,12 +340,6 @@
         <input type="text" value="https://brave-rock-0b579250f.4.azurestaticapps.net/" id="shareLink" readonly>
         <button onclick="copyLink()">Copy Link</button>
       </div>
-
-      <!-- Webchat Section -->
-      <div id="webchat" role="main">
-        <div id="chatContainer"></div> 
-      </div>
-    </div>
 
     <script crossorigin="anonymous" src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
 
