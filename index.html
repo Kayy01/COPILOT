@@ -82,7 +82,7 @@
         align-items: center;
         justify-content: center;
         background-color: #f7a718; /* Orange Banner */
-        height: 58px;
+        height: 50px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         border-bottom: 3px solid #f5d50f; /* Elegant bottom border */
       }
@@ -119,42 +119,7 @@
         transform: translateY(-2px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
       }
-      /* Container for Pre-Prompt Buttons */
-      .prePromptContainer {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 16px;
-        width: fit-content;
-        position: relative;
-        top: 25%; /* Adjust the vertical positioning to lower the container */
-        left: 50%;
-        transform: translate(-50%, -50%); /* Center align */
-      }
 
-      /* Pre-Prompt Button Styles */
-      .prePromptButton {
-        background-color: white;
-        color: #f7a718; /* Orange text */
-        border: 2px solid #f7a718; /* Orange border */
-        border-radius: 25px;
-        padding: 9px 14px; /* Adjusted padding */
-        font-size: 15px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-        width: 200px; /* Adjust width if necessary */
-        text-align: center;
-      }
-      
-      .prePromptButton:hover {
-        background-color: #f7a718; /* Orange background on hover */
-        color: white; /* White text on hover */
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
-      }
-      
       /* Chatbox animation */
       #webchat {
         position: absolute;
@@ -279,6 +244,42 @@
       
       #sharePopup button:hover {
         background-color: #e69500;
+      }
+
+      /* Container for Pre-Prompt Buttons */
+      .prePromptContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        width: fit-content;
+        position: relative;
+        top: 25%; /* Adjust the vertical positioning to lower the container */
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center align */
+      }
+
+      /* Pre-Prompt Button Styles */
+      .prePromptButton {
+        background-color: white;
+        color: #f7a718; /* Orange text */
+        border: 2px solid #f7a718; /* Orange border */
+        border-radius: 25px;
+        padding: 9px 14px; /* Adjusted padding */
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+        width: 200px; /* Adjust width if necessary */
+        text-align: center;
+      }
+      
+      .prePromptButton:hover {
+        background-color: #f7a718; /* Orange background on hover */
+        color: white; /* White text on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
       }
 
     </style>
