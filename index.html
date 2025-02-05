@@ -122,11 +122,11 @@
 
       /* Chatbox animation */
       #webchat {
-        position: none;
-        bottom: 20%;
+        position: absolute;
+        bottom: 10%; /* Reduce the bottom offset for better positioning */
         width: 97%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.7); /* Transparent blue-ish background */
+        height: 70%; /* Adjust the height to avoid it taking the entire screen */
+        background: rgba(255, 255, 255, 0.7);
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
         box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
@@ -136,7 +136,7 @@
         align-items: center;
         overflow: hidden;
         transition: all 0.5s ease-in-out;
-        backdrop-filter: blur(5px); /* Reduced blur effect */
+        backdrop-filter: blur(5px);
         z-index: 5;
       }
       #webchat.open {
@@ -251,13 +251,13 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        align-items: center; /* Fixes vertical misalignment */
+        align-items: center;
         gap: 16px;
-        width: fit-content; /* Prevents full-width stretching */
+        width: fit-content;
         position: relative;
-        top: 40%;
+        top: 25%; /* Adjust the vertical positioning to lower the container */
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); /* Center align */
       }
 
       /* Pre-Prompt Button Styles */
